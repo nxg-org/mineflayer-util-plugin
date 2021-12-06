@@ -1,6 +1,5 @@
 import type { Bot } from "mineflayer";
 import { UtilFunctions } from "./utilFunctions";
-import { PredictiveWorld } from "./worldRelated/predictiveWorld";
 
 declare module "mineflayer" {
     type PrioGroups = "inventory" | "movement";
@@ -28,5 +27,4 @@ export default function inject(bot: Bot) {
     bot.util = new UtilFunctions(bot);
 }
 
-export { CommonSense } from "./commonSense";
 export { AABB } from "./calcs/aabb";

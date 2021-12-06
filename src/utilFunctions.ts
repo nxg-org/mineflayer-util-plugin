@@ -4,10 +4,8 @@ import { FilterFunctions } from "./filterFunctions";
 import { InventoryFunctions } from "./inventoryFunctions";
 import { MovementFunctions } from "./movementFunctions";
 import { promisify } from "util";
-import type { Item } from "prismarine-item";
 import { PredictiveFunctions } from "./predictiveFunctions";
 import { MathFunctions } from "./mathUtil";
-import { CommonSense } from "./commonSense";
 import { WorldFunctions } from "./WorldFunctions";
 
 /**
@@ -38,7 +36,6 @@ export class UtilFunctions {
     public predict: PredictiveFunctions;
     public filters: FilterFunctions;
     public math: MathFunctions;
-    public commonSense: CommonSense;
     public world: WorldFunctions;
     private builtInsPriorityStore: Partial<{ [funcName: string]: priorityStored[] }>;
     private customPriorityStore: Partial<{ [funcName: string]: priorityStored[] }>;
@@ -50,7 +47,6 @@ export class UtilFunctions {
         this.entity = new EntityFunctions(bot);
         this.predict = new PredictiveFunctions(bot);
         this.filters = new FilterFunctions(bot);
-        this.commonSense = new CommonSense(bot);
         this.world = new WorldFunctions(bot);
         this.math = new MathFunctions();
         this.builtInsPriorityStore = {};
