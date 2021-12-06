@@ -19,6 +19,18 @@
     jsonwebtoken "^8.5.1"
     uuid "^8.3.0"
 
+"@nxg-org/mineflayer-util-plugin@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@nxg-org/mineflayer-util-plugin/-/mineflayer-util-plugin-1.0.1.tgz#61cab7c91c2d1c6ca50b7ee6ef5302455cee1bb4"
+  integrity sha512-sryj0xpdHxyJAYS/CTw9Jy+xtXphC4JtpQGcHkA3GWbPlfELmHtLdIm0cffQJuqwsEFT7Sjk9CyxRBOwPhWVcA==
+  dependencies:
+    minecraft-data "^2.97.0"
+    mineflayer "^3.11.2"
+    mineflayer-pathfinder "^1.8.0"
+    prismarine-block "^1.10.3"
+    prismarine-item "^1.11.1"
+    vec3 "^0.1.7"
+
 "@types/node@^16.11.11":
   version "16.11.11"
   resolved "https://registry.npmjs.org/@types/node/-/node-16.11.11.tgz"
