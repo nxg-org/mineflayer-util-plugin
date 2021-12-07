@@ -68,8 +68,8 @@ export class EntityFunctions {
      */
     getHealthChange(packetMetadata: any, entity: Entity) {
         const oldMetadata = entity.metadata;
-        const newMetadata = this.parseMetadata(packetMetadata, oldMetadata);
-        return this.getHealthFromMetadata(newMetadata) - this.getHealthFromMetadata(oldMetadata);
+        const newMetadata = this.parseMetadata(packetMetadata, JSON.parse(JSON.stringify(oldMetadata)));
+        return -(this.getHealthFromMetadata(oldMetadata) - this.getHealthFromMetadata(newMetadata)) ;
     }
 
     getDistanceToEntity(entity: Entity): number {
