@@ -39,20 +39,37 @@ export class EntityFunctions {
     /**
      * TODO: Version specific right now. Generalize. Unknown method.
      * @param metadata metadata from Prismarine-Entity Entity.
-     * @returns
+     * @returns number
      */
     getHealth(entity?: Entity): number {
-        entity = entity ?? this.bot.entity;
-        let metadata = entity.metadata;
-        //console.log(entity.metadata, this.healthSlot, this.bot.entity.health)
-        let healthSlot = this.healthSlot; //metadata[this.healthSlot] ? this.healthSlot : metadata.findIndex((met) => Number(met) > 1 && Number(met) <= 20);
-        // return Number(metadata[healthSlot]) + (Number(metadata[healthSlot + 4]) ?? 0);
-
+        entity ??= this.bot.entity;
+        const metadata = entity.metadata;
+        const healthSlot = this.healthSlot; //metadata[this.healthSlot] ? this.healthSlot : metadata.findIndex((met) => Number(met) > 1 && Number(met) <= 20);
         let health = Number(metadata[healthSlot]);
         if (!health || health === 0) health = entity === this.bot.entity ? this.bot.entity.health ?? 0 : 0;
         if (health === 0) console.log(this.healthSlot, entity.metadata);
         // console.log(health + (Number(metadata[this.healthSlot + 4]) ?? 0))
         return health + (Number(metadata[this.healthSlot + 4]) ?? 0);
+    }
+
+    /**
+     *
+     * @param metadata Must be FULL metadata object.
+     * @returns number
+     */
+    getHealthFromMetadata(metadata: object[]): number {
+        return (Number(metadata[this.healthSlot]) + Number(metadata[this.healthSlot + 4])) ?? undefined;
+    }
+
+    /**
+     * TODO: Version specific right now. Generalize. Unknown method.
+     * @param metadata metadata from Prismarine-Entity Entity.
+     * @returns
+     */
+    getHealthChange(packetMetadata: any, entity: Entity) {
+        const oldMetadata = entity.metadata;
+        const newMetadata = this.parseMetadata(packetMetadata, oldMetadata);
+        return this.getHealthFromMetadata(newMetadata) - this.getHealthFromMetadata(oldMetadata);
     }
 
     getDistanceToEntity(entity: Entity): number {
@@ -67,5 +84,15 @@ export class EntityFunctions {
         const w = entity.width ?? entity.height / 2;
         const { x, y, z } = entity.position;
         return new AABB(-w, 0, -w, w, entity.height, w).offset(x, y, z);
+    }
+
+    //Stolen from mineflayer.
+    private parseMetadata(metadata: any, entityMetadata: any = {}) {
+        if (metadata !== undefined) {
+            for (const { key, value } of metadata) {
+                entityMetadata[key] = value;
+            }
+        }
+        return entityMetadata;
     }
 }
