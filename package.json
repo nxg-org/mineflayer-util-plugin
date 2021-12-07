@@ -1,6 +1,6 @@
 {
     "name": "@nxg-org/mineflayer-util-plugin",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "description": "mineflayer utils for NextGEN mineflayer plugins.",
     "keywords": [
         "mineflayer",
