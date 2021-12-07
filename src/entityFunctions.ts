@@ -87,9 +87,9 @@ export class EntityFunctions {
     }
 
     //Stolen from mineflayer.
-    private parseMetadata(metadata: any, entityMetadata: any = {}) {
-        if (metadata !== undefined) {
-            for (const { key, value } of metadata) {
+    private parseMetadata(packetMetadata: any, entityMetadata: any = {}) {
+        if (packetMetadata !== undefined) {
+            for (const { key, value } of packetMetadata) {
                 entityMetadata[key] = value;
             }
         }
