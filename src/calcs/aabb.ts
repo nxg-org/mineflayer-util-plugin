@@ -143,7 +143,7 @@ export class AABB {
     }
 
     xzIntersectsRay(origin: Vec3, direction: Vec3): { x: number; z: number } | null {
-        const d = this.distanceFromRay(origin, direction);
+        const d = this.distanceFromRay(origin, direction, true);
         return d === Infinity ? null : { x: origin.x + direction.x * d, z: origin.z + direction.z * d };
     }
 
