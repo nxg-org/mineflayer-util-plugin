@@ -1,6 +1,5 @@
-import type { Bot } from "mineflayer";
-import type { Block } from "prismarine-block";
 import { Vec3 } from "vec3";
+
 
 export enum BlockFace {
     UNKNOWN = -999,

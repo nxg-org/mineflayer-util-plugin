@@ -1,7 +1,7 @@
 import type { Bot } from "mineflayer";
 import type { Block } from "prismarine-block";
 import { Vec3 } from "vec3";
-import { RaycastIterator } from "./raycastIterator";
+import { RaycastIterator } from "../calcs/iterators";
 
 export type Overwrites = { [coord: string]: Block | null };
 

@@ -7,6 +7,7 @@ import { promisify } from "util";
 import { PredictiveFunctions } from "./predictiveFunctions";
 import { MathFunctions } from "./mathUtil";
 import { WorldFunctions } from "./WorldFunctions";
+import { RayTraceFunctions } from "./rayTracingFunctions";
 
 /**
  * I don't believe I need any locks, as I'm only going to have one instance of this per bot.
@@ -37,6 +38,7 @@ export class UtilFunctions {
     public filters: FilterFunctions;
     public math: MathFunctions;
     public world: WorldFunctions;
+    public raytrace: RayTraceFunctions;
     private builtInsPriorityStore: Partial<{ [funcName: string]: priorityStored[] }>;
     private customPriorityStore: Partial<{ [funcName: string]: priorityStored[] }>;
     private builtInCurrentExecuting: { [funcName: string]: priorityStored | undefined };
@@ -48,6 +50,7 @@ export class UtilFunctions {
         this.predict = new PredictiveFunctions(bot);
         this.filters = new FilterFunctions(bot);
         this.world = new WorldFunctions(bot);
+        this.raytrace = new RayTraceFunctions(bot);
         this.math = new MathFunctions();
         this.builtInsPriorityStore = {};
         this.customPriorityStore = {};
