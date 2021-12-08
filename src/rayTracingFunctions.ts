@@ -48,7 +48,7 @@ export class RayTraceFunctions {
 
         for (let i = 0; i < entities.length; i++) {
             const e = entities[i];
-            const w = e.height === 1.62 ? 0.3 : e.height / 2;
+            const w = e.height >= 1.62 && e.height <= 1.99 || e.height === 2.9 ? 0.3 : e.height / 2;
 
             const shapes = [[-w, 0, -w, w, e.height + (e.height === 1.62 ? 0.18 : 0), w]];
             const intersect = iterator.intersect(shapes as any, e.position);

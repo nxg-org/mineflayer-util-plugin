@@ -142,25 +142,27 @@ export class AABB {
         );
     }
 
-    intersectsRay(origin: Vec3, direction: Vec3) {
+    xzIntersectsRay(origin: Vec3, direction: Vec3): { x: number; z: number } | null {
         const d = this.distanceFromRay(origin, direction);
-        if (d === Infinity) {
-            return null;
-        } else {
-            return new Vec3(origin.x + direction.x * d, origin.y + direction.y * d, origin.z + direction.z * d);
-        }
+        return d === Infinity ? null : { x: origin.x + direction.x * d, z: origin.z + direction.z * d };
     }
 
-    distanceFromRay(origin: Vec3, direction: Vec3) {
+    intersectsRay(origin: Vec3, direction: Vec3) {
+        const d = this.distanceFromRay(origin, direction);
+        return d === Infinity ? null : new Vec3(origin.x + direction.x * d, origin.y + direction.y * d, origin.z + direction.z * d);
+    }
+
+    distanceFromRay(origin: Vec3, direction: Vec3, xz: boolean = false) {
         const ro = origin.toArray();
         const rd = direction.normalize().toArray();
         const aabb = this.toMinAndMaxArrays();
         const dims = ro.length; // will change later.
+        const dif = xz ? 2 : 1;
         let lo = -Infinity;
         let hi = +Infinity;
         // let test = origin.clone()
 
-        for (let i = 0; i < dims; i++) {
+        for (let i = 0; i < dims; i += dif) {
             let dimLo = (aabb[0][i] - ro[i]) / rd[i];
             let dimHi = (aabb[1][i] - ro[i]) / rd[i];
 
@@ -169,22 +171,7 @@ export class AABB {
                 dimLo = dimHi;
                 dimHi = tmp;
             }
-
-            // let num;
-            // switch (i) {
-            //     case 0:
-            //         num = "x"
-            //         break;
-            //     case 1:
-            //         num = "y"
-            //         break;
-            //     case 2:
-            //         num = "z"
-            //         break;
-            // }
-            // console.log(num, aabb[0][i], aabb[1][i], ro[i], "highest overall:", lo, hi )
             if (dimHi < lo || dimLo > hi) {
-                console.log("fuck", dimHi < lo, dimLo > hi);
                 return Infinity;
             }
 
