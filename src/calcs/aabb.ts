@@ -1,5 +1,4 @@
 import { Vec3 } from "vec3";
-
 export class AABB {
     public minX: number;
     public minY: number;
@@ -142,19 +141,33 @@ export class AABB {
         );
     }
 
-    xzIntersectsRay(origin: Vec3, direction: Vec3): { x: number; z: number } | null {
-        const d = this.distanceFromRay(origin, direction, true);
-        return d === Infinity ? null : { x: origin.x + direction.x * d, z: origin.z + direction.z * d };
+    xzIntersectsRay(org: Vec3, dir: Vec3): { x: number; z: number } | null {
+        const d = this.distanceFromRay(org, dir, true);
+        return d === Infinity ? null : { x: org.x + dir.x * d, z: org.z + dir.z * d };
     }
 
-    intersectsRay(origin: Vec3, direction: Vec3) {
-        const d = this.distanceFromRay(origin, direction);
-        return d === Infinity ? null : new Vec3(origin.x + direction.x * d, origin.y + direction.y * d, origin.z + direction.z * d);
+    intersectsRay(org: Vec3, dir: Vec3) {
+        const d = this.distanceFromRay(org, dir);
+        return d === Infinity ? null : new Vec3(org.x + dir.x * d, org.y + dir.y * d, org.z + dir.z * d);
+    }
+
+    //TODO: Better check for hit reg of PLANES.
+    xzIntersectsSegment(org: Vec3, dest: Vec3): { x: number; z: number } | null {
+        const dir = dest.clone().subtract(org).normalize();
+        const d = this.distanceFromRay(org, dir, true);
+        return d > dest.distanceTo(org) || d < 0 ? null : { x: org.x + dir.x * d, z: org.z + dir.z * d };
+    }
+
+    //TODO: Better check for hit reg of PLANES.
+    intersectsSegment(org: Vec3, dest: Vec3) {
+        const dir = dest.clone().subtract(org).normalize();
+        const d = this.distanceFromRay(org, dir);
+        return d > dest.distanceTo(org) || d < 0 ? null : new Vec3(org.x + dir.x * d, org.y + dir.y * d, org.z + dir.z * d);
     }
 
     distanceFromRay(origin: Vec3, direction: Vec3, xz: boolean = false) {
         const ro = origin.toArray();
-        const rd = direction.normalize().toArray();
+        const rd = direction.clone().normalize().toArray();
         const aabb = this.toMinAndMaxArrays();
         const dims = ro.length; // will change later.
         const dif = xz ? 2 : 1;
@@ -191,6 +204,13 @@ export class AABB {
             this.maxY === other.maxY &&
             this.maxZ === other.maxZ
         );
+    }
+
+    xzDistanceTo(pos: Vec3, heightOffset: number = 0): number {
+        const { x, y, z } = pos.offset(0, heightOffset, 0);
+        let dx = Math.max(this.minX - x, 0, x - this.maxX);
+        let dz = Math.max(this.minZ - z, 0, z - this.maxZ);
+        return Math.sqrt(dx * dx + dz * dz);
     }
 
     distanceTo(pos: Vec3, heightOffset: number = 0): number {
