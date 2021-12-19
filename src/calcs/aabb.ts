@@ -20,6 +20,8 @@ export class AABB {
         return new AABB(min.x, min.y, min.z, max.x, max.y, max.z);
     }
 
+    
+
     set(x0: number, y0: number, z0: number, x1: number, y1: number, z1: number) {
         this.minX = x0;
         this.minY = y0;
@@ -43,6 +45,19 @@ export class AABB {
 
     toVecs() {
         return { 0: new Vec3(this.minX, this.minY, this.minZ), 1: new Vec3(this.maxX, this.maxY, this.maxZ) };
+    }
+
+    toVertices() {
+        return [
+            new Vec3(this.minX, this.minY, this.minZ), 
+            new Vec3(this.minX, this.minY, this.maxZ),
+            new Vec3(this.minX, this.maxY, this.minZ),
+            new Vec3(this.minX, this.maxY, this.maxZ),
+            new Vec3(this.maxX, this.minY, this.minZ), 
+            new Vec3(this.maxX, this.minY, this.maxZ),
+            new Vec3(this.maxX, this.maxY, this.minZ),
+            new Vec3(this.maxX, this.maxY, this.maxZ),
+        ]
     }
 
     floor() {
