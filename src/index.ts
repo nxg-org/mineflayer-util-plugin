@@ -28,3 +28,4 @@ export default function inject(bot: Bot) {
 }
 
 export { AABB } from "./calcs/aabb";
+export { InterceptFunctions } from "./calcs/intercept"
