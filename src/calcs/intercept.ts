@@ -11,11 +11,20 @@ export class InterceptFunctions {
         //old code:
         const range = from.distanceTo(to);
         const direction = to.minus(from).normalize();
-        if (isNaN(range)) return {block: null, iterations: []};
+        if (isNaN(range)) return { block: null, iterations: [] };
         return this.raycast(from, direction, range);
     }
-    raycast(from: Vec3, direction: Vec3, range: number) {
-        const iterations: (typeof pos)[] = [];
+    raycast(
+        from: Vec3,
+        direction: Vec3,
+        range: number
+    ): { block: Block | null; iterations: { x: number; y: number; z: number; face: number }[] } {
+        const iterations: {
+            x: number;
+            y: number;
+            z: number;
+            face: number;
+        }[] = [];
         const iter = new RaycastIterator(from, direction, range);
         let pos = iter.next();
         while (pos) {
@@ -32,7 +41,7 @@ export class InterceptFunctions {
                 }
             }
             pos = iter.next();
-            if (range > 20 || (iterations.length >= 1000 && iterations.length % 1000 === 0)){
+            if (range > 20 || (iterations.length >= 1000 && iterations.length % 1000 === 0)) {
                 // console.trace("too much");
                 console.log(from, direction, range, iterations, block, position, pos);
             }
@@ -61,7 +70,7 @@ class RaycastIterator {
     pos: Vec3;
     dir: Vec3;
     invDirX: number;
-    invDirY: number
+    invDirY: number;
     invDirZ: number;
     stepX: number;
     stepY: number;
@@ -81,9 +90,8 @@ class RaycastIterator {
             face: BlockFace.UNKNOWN,
         };
 
-        this.blockVec = new Vec3(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z))
+        this.blockVec = new Vec3(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z));
 
-    
         this.pos = pos;
         this.dir = dir;
 
@@ -109,7 +117,7 @@ class RaycastIterator {
     // Returns null if none of the shapes is intersected, otherwise returns intersect pos and face
     // shapes are translated by offset
     //[x0: number,y0: number,z0: number,x1:number,y1:number,z1:number][]
-    intersect(shapes: [x0: BlockFace,y0: BlockFace,z0: BlockFace,x1:BlockFace,y1:BlockFace,z1:BlockFace][], offset: Vec3) {
+    intersect(shapes: [x0: BlockFace, y0: BlockFace, z0: BlockFace, x1: BlockFace, y1: BlockFace, z1: BlockFace][], offset: Vec3) {
         // Shapes is an array of shapes, each in the form of: [x0, y0, z0, x1, y1, z1]
         let t = Number.MAX_VALUE;
         let f = BlockFace.UNKNOWN;
