@@ -5,7 +5,7 @@ import { Vec3 } from "vec3";
 type Iteration = { x: number; y: number; z: number; face: number };
 type BlockAndIterations = { block: Block | null; iterations: Iteration[] };
 export class InterceptFunctions {
-    constructor(public bot: Bot) {}
+    constructor(private bot: Bot) {}
 
     //Old ver grabs range between the two + direction from... from to... to.
     //calls raycast.

@@ -107,7 +107,7 @@ export class MovementFunctions {
             if (update) {
                 // this.bot.entity.yaw = yaw;
                 // this.bot.entity.pitch = pitch
-                this.bot.lookAt(pos, true);
+                this.bot.look(yaw, pitch, true);
             }
         }
     }

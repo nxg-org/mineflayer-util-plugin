@@ -84,16 +84,13 @@ export class InventoryFunctions {
     }
 
     findItemByID(itemId: number, metadata?: number): Item | null {
-        const potentialMatches = this.getAllItems().filter((item) => item.type === itemId);
-        if (metadata) return potentialMatches.find((item) => item.metadata === metadata) ?? null;
-        return potentialMatches[0] ?? null;
+        if (metadata) return this.getAllItems().find((item) => item.type === itemId && item.metadata === metadata) ?? null;
+        else return this.getAllItems().find((item) => item.type === itemId) ?? null;
     }
 
-    findItem(name: string, metadata?: number) {
-        //[...this.getAllItems(), this.bot.inventory.selectedItem!]
-        const potentialMatches = this.getAllItems().filter((item) => item?.name.includes(name));
-        if (metadata) return potentialMatches.find((item) => item.metadata === metadata) ?? null;
-        return potentialMatches[0] ?? null;
+    findItem(name: string, metadata?: number): Item | null {
+        if (metadata) return this.getAllItems().find((item) => item.name === name && item.metadata === metadata) ?? null;
+        else return this.getAllItems().find((item) => item.name === name) ?? null;
     }
 
     //alias.

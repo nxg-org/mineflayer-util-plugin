@@ -94,10 +94,10 @@ const DIFFICULTY_VALUES = {
 };
 
 export const ARMOR_THOUGHNESS_KEY = "generic.armorToughness";
-const AIR_BLOCK = {type: 0};
+const AIR_BLOCK = { type: 0 };
 
 export class PredictiveFunctions {
-    private damageMultiplier = 7; // for 1.12+ 8 for 1.8 TODO check when the change occur (likely 1.9)
+    private damageMultiplier: number; // for 1.12+ 8 for 1.8 TODO check when the change occur (likely 1.9)
     private armorToughnessKey: string; // was renamed in 1.16
     private armorProtectionKey: string;
 
@@ -106,13 +106,21 @@ export class PredictiveFunctions {
     public world: PredictiveWorld;
 
     constructor(private bot: Bot) {
-        if ((require('minecraft-data') as (typeof import('minecraft-data')))(bot.version).isNewerOrEqualTo("1.16")){
+        const version = Number(bot.version.split(".")[1]);
+        if (version === 16) {
             this.armorToughnessKey = "generic.armorToughness";
             this.armorProtectionKey = "generic.armor";
         } else {
-            this.armorToughnessKey = "generic.armorToughness";
-            this.armorProtectionKey = "generic.armor";
+            this.armorToughnessKey = "minecraft:generic.armor_toughness";
+            this.armorProtectionKey = "minecraft:generic.armor";
         }
+
+        if (version > 9) {
+            this.damageMultiplier = 8;
+        } else {
+            this.damageMultiplier = 7;
+        }
+
         const effects = md(bot.version).effects;
         for (const effectId in effects) {
             const effect = effects[effectId];
@@ -132,11 +140,11 @@ export class PredictiveFunctions {
     }
 
     placeBlocks(blocks: Overwrites) {
-        this.world.setBlocks(blocks)
+        this.world.setBlocks(blocks);
     }
 
     removePredictedBlocks(positions: Vec3[], force: boolean = false) {
-        this.world.removeBlocks(positions, force)
+        this.world.removeBlocks(positions, force);
     }
 
     selfExplosionDamage(sourcePos: Vec3, power: number, rawDamages = false) {
