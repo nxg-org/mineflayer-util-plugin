@@ -1,15 +1,24 @@
 import type { Bot } from "mineflayer";
 import type { Entity } from "prismarine-entity";
 import type { Vec3 } from "vec3";
-import { goals } from "mineflayer-pathfinder";
+import { goals, Movements } from "mineflayer-pathfinder";
+import md from "minecraft-data"
 
 const { GoalCompositeAll, GoalInvert, GoalFollow } = goals;
 
 export class MovementFunctions {
-    goalArray = new GoalCompositeAll();
-    lastYaw: number = 0;
-    lastPitch: number = 0;
-    constructor(public bot: Bot) {}
+    public goalArray = new GoalCompositeAll();
+    constructor(private bot: Bot) {
+        this.movements = new Movements(bot, md(bot.version))
+    }
+
+    public set movements(movements: Movements) {
+        this.bot.pathfinder.setMovements(movements)
+    }
+
+    public get movements(): Movements {
+        return this.movements;
+    }
 
     /**
      * Fuckin' mineflayer-pathfinder still doesn't have typings.
@@ -91,24 +100,22 @@ export class MovementFunctions {
 
     forceLook(yaw: number, pitch: number, update: boolean = false) {
         const notchianYawAndPitch = { yaw: this.bot.util.math.toNotchianYaw(yaw), pitch: this.bot.util.math.toNotchianPitch(pitch) };
-        this.bot._client.write("look", { ...notchianYawAndPitch, onGround: false });
+        this.bot._client.write("look", { ...notchianYawAndPitch, onGround: this.bot.entity.onGround });
         if (update) {
-            // this.bot.entity.yaw = yaw;
-            // this.bot.entity.pitch = pitch
-            this.bot.look(yaw, pitch, true);
+            this.bot.entity.yaw = yaw;
+            this.bot.entity.pitch = pitch;
+            // this.bot.look(yaw, pitch, true);
         }
     }
 
-    forceLookAt(pos: Vec3, update: boolean = false, trueForce: boolean = false) {
+    forceLookAt(pos: Vec3, update: boolean = false) {
         const { yaw, pitch } = this.bot.util.math.pointToYawAndPitch(this.bot, pos);
         const nyp = { yaw: this.bot.util.math.toNotchianYaw(yaw), pitch: this.bot.util.math.toNotchianPitch(pitch) };
-        if (nyp.yaw !== this.lastYaw || nyp.pitch !== this.lastPitch || trueForce) {
-            this.bot._client.write("look", { ...nyp, onGround: false });
-            if (update) {
-                // this.bot.entity.yaw = yaw;
-                // this.bot.entity.pitch = pitch
-                this.bot.look(yaw, pitch, true);
-            }
+        this.bot._client.write("look", { ...nyp, onGround: this.bot.entity.onGround });
+        if (update) {
+            this.bot.entity.yaw = yaw;
+            this.bot.entity.pitch = pitch;
+            // this.bot.look(yaw, pitch, true);
         }
     }
 
