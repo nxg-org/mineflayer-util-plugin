@@ -100,7 +100,7 @@ export class MovementFunctions {
 
     forceLook(yaw: number, pitch: number, update: boolean = false) {
         const notchianYawAndPitch = { yaw: this.bot.util.math.toNotchianYaw(yaw), pitch: this.bot.util.math.toNotchianPitch(pitch) };
-        this.bot._client.write("look", { ...notchianYawAndPitch, onGround: this.bot.entity.onGround });
+        this.bot._client.write("look", notchianYawAndPitch);
         if (update) {
             this.bot.entity.yaw = yaw;
             this.bot.entity.pitch = pitch;
@@ -111,7 +111,7 @@ export class MovementFunctions {
     forceLookAt(pos: Vec3, update: boolean = false) {
         const { yaw, pitch } = this.bot.util.math.pointToYawAndPitch(this.bot, pos);
         const nyp = { yaw: this.bot.util.math.toNotchianYaw(yaw), pitch: this.bot.util.math.toNotchianPitch(pitch) };
-        this.bot._client.write("look", { ...nyp, onGround: this.bot.entity.onGround });
+        this.bot._client.write("look", nyp);
         if (update) {
             this.bot.entity.yaw = yaw;
             this.bot.entity.pitch = pitch;
