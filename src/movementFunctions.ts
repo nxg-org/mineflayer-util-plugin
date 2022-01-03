@@ -2,18 +2,18 @@ import type { Bot } from "mineflayer";
 import type { Entity } from "prismarine-entity";
 import type { Vec3 } from "vec3";
 import { goals, Movements } from "mineflayer-pathfinder";
-import md from "minecraft-data"
+import md from "minecraft-data";
 
 const { GoalCompositeAll, GoalInvert, GoalFollow } = goals;
 
 export class MovementFunctions {
     public goalArray = new GoalCompositeAll();
     constructor(private bot: Bot) {
-        this.movements = new Movements(bot, md(bot.version))
+        this.movements = new Movements(bot, md(bot.version));
     }
 
     public set movements(movements: Movements) {
-        this.bot.pathfinder.setMovements(movements)
+        this.bot.pathfinder.setMovements(movements);
     }
 
     public get movements(): Movements {
@@ -98,9 +98,9 @@ export class MovementFunctions {
         return false;
     }
 
-    forceLook(yaw: number, pitch: number, update: boolean = false) {
+    forceLook(yaw: number, pitch: number, onGround?: boolean, update: boolean = false) {
         const notchianYawAndPitch = { yaw: this.bot.util.math.toNotchianYaw(yaw), pitch: this.bot.util.math.toNotchianPitch(pitch) };
-        this.bot._client.write("look", notchianYawAndPitch);
+        this.bot._client.write("look", { ...notchianYawAndPitch, onGround: onGround ?? this.bot.entity.onGround });
         if (update) {
             this.bot.entity.yaw = yaw;
             this.bot.entity.pitch = pitch;
@@ -108,10 +108,10 @@ export class MovementFunctions {
         }
     }
 
-    forceLookAt(pos: Vec3, update: boolean = false) {
+    forceLookAt(pos: Vec3, onGround?: boolean, update: boolean = false) {
         const { yaw, pitch } = this.bot.util.math.pointToYawAndPitch(this.bot, pos);
         const nyp = { yaw: this.bot.util.math.toNotchianYaw(yaw), pitch: this.bot.util.math.toNotchianPitch(pitch) };
-        this.bot._client.write("look", nyp);
+        this.bot._client.write("look", { ...nyp, onGround: onGround ?? this.bot.entity.onGround });
         if (update) {
             this.bot.entity.yaw = yaw;
             this.bot.entity.pitch = pitch;
