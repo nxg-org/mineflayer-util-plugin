@@ -19,9 +19,9 @@ declare module "mineflayer" {
 }
 
 declare module "prismarine-entity" {
-    interface Entity {
-        attributes: { [index: string]: { value: number; modifiers: any[] } };
-    }
+    // interface Entity {
+    //     attributes: { [index: string]: { value: number; modifiers: any[] } };
+    // }
 }
 
 export default function inject(bot: Bot) {

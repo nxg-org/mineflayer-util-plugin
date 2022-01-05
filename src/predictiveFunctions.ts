@@ -157,9 +157,9 @@ export class PredictiveFunctions {
         // The following modifiers are constant for the input bot.entity and doesnt depend
         // on the source position, so if the goal is to compare between positions they can be
         // ignored to save computations
-        if (!rawDamages && this.bot.entity.attributes[this.armorProtectionKey]) {
-            const armor = getAttributeValue(this.bot.entity.attributes[this.armorProtectionKey]);
-            const armorToughness = getAttributeValue(this.bot.entity.attributes[this.armorToughnessKey]);
+        if (!rawDamages && (this.bot.entity as any).attributes[this.armorProtectionKey]) {
+            const armor = getAttributeValue((this.bot.entity as any).attributes[this.armorProtectionKey]);
+            const armorToughness = getAttributeValue((this.bot.entity as any).attributes[this.armorToughnessKey]);
             damages = getDamageAfterAbsorb(damages, armor, armorToughness);
             const equipment = armorPieces.map((piece) => this.bot.inventory.slots[this.bot.getEquipmentDestSlot(piece)]);
             damages = getDamageWithEnchantments(damages, equipment);
@@ -179,9 +179,9 @@ export class PredictiveFunctions {
         // The following modifiers are constant for the input targetEntity and doesnt depend
         // on the source position, so if the goal is to compare between positions they can be
         // ignored to save computations
-        if (!rawDamages && targetEntity.attributes[this.armorProtectionKey]) {
-            const armor = getAttributeValue(targetEntity.attributes[this.armorProtectionKey]);
-            const armorToughness = getAttributeValue(targetEntity.attributes[this.armorToughnessKey]);
+        if (!rawDamages && (targetEntity as any).attributes[this.armorProtectionKey]) {
+            const armor = getAttributeValue((targetEntity as any).attributes[this.armorProtectionKey]);
+            const armorToughness = getAttributeValue((targetEntity as any).attributes[this.armorToughnessKey]);
             damages = getDamageAfterAbsorb(damages, armor, armorToughness);
             damages = getDamageWithEnchantments(damages, targetEntity.equipment);
             damages = this.getDamageWithEffects(damages, targetEntity.effects as any);
