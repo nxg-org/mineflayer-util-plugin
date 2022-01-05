@@ -80,8 +80,24 @@ export class EntityFunctions {
         return first.position.distanceTo(second.position);
     }
 
-    getEntityAABB(entity: { position: Vec3; height: number; width?: number }): AABB {
-        const w = entity.width ?? entity.height / 2;
+    getEntityAABB(entity: {type: string, position: Vec3, height: number,  width?: number}): AABB {
+        switch (entity.type) {
+            case "player":
+                return this.getPlayerAABB({position: entity.position})
+            case "mob":
+            default: //TODO: Implement better AABBs. However, this may just be correct.
+                return this.getEntityAABBRaw({position: entity.position, height: entity.height, width: entity.width ?? entity.height})
+    
+        }
+    
+    }
+    
+    getPlayerAABB(entity: {position: Vec3}): AABB {
+        return this.getEntityAABBRaw({position: entity.position, height: 1.8, width: 0.3})
+    }
+    
+    getEntityAABBRaw(entity: { position: Vec3; height: number; width: number}) {
+        const w = entity.width / 2
         const { x, y, z } = entity.position;
         return new AABB(-w, 0, -w, w, entity.height, w).offset(x, y, z);
     }
