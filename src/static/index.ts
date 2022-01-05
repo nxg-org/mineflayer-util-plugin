@@ -1,2 +1,2 @@
 export * from "./aabbUtil"
-export * from "./mathUtils"
+export * from "./mathUtil"
