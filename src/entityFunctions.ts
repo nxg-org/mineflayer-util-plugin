@@ -58,7 +58,7 @@ export class EntityFunctions {
      * @returns number
      */
     getHealthFromMetadata(metadata: object[]): number {
-        return (Number(metadata[this.healthSlot]) + Number(metadata[this.healthSlot + 4])) ?? undefined;
+        return Number(metadata[this.healthSlot]) + Number(metadata[this.healthSlot + 4]) ?? undefined;
     }
 
     /**
@@ -80,29 +80,27 @@ export class EntityFunctions {
         return first.position.distanceTo(second.position);
     }
 
-    getEntityAABB(entity: {type: string, position: Vec3, height: number,  width?: number}): AABB {
+    getEntityAABB(entity: { type: string; position: Vec3; height: number; width?: number }): AABB {
         switch (entity.type) {
             case "player":
-                return this.getPlayerAABB({position: entity.position})
+                return this.getPlayerAABB({ position: entity.position });
             case "mob":
-            default: //TODO: Implement better AABBs. However, this may just be correct.
-                return this.getEntityAABBRaw({position: entity.position, height: entity.height, width: entity.width ?? entity.height})
-    
+            default:
+                //TODO: Implement better AABBs. However, this may just be correct.
+                return this.getEntityAABBRaw({ position: entity.position, height: entity.height, width: entity.width ?? entity.height });
         }
-    
     }
-    
-    getPlayerAABB(entity: {position: Vec3}): AABB {
-        return this.getEntityAABBRaw({position: entity.position, height: 1.8, width: 0.3})
+
+    getPlayerAABB(entity: { position: Vec3 }): AABB {
+        return this.getEntityAABBRaw({ position: entity.position, height: 1.8, width: 0.3 });
     }
-    
-    getEntityAABBRaw(entity: { position: Vec3; height: number; width: number}) {
-        const w = entity.width / 2
+
+    getEntityAABBRaw(entity: { position: Vec3; height: number; width?: number }) {
+        const w = entity.width ? entity.width / 2 : entity.height / 2;
         const { x, y, z } = entity.position;
         return new AABB(-w, 0, -w, w, entity.height, w).offset(x, y, z);
     }
 
-    //Stolen from mineflayer.
     private parseMetadata(packetMetadata: any, entityMetadata: any = {}) {
         if (packetMetadata !== undefined) {
             for (const { key, value } of packetMetadata) {
