@@ -31,8 +31,8 @@ export namespace AABBUtils {
         return getEntityAABBRaw({position: entity.position, height: 1.8, width: 0.3})
     }
     
-    export function getEntityAABBRaw(entity: { position: Vec3; height: number; width: number}) {
-        const w = entity.width / 2
+    export function getEntityAABBRaw(entity: { position: Vec3; height: number; width?: number}) {
+        const w = entity.width ? entity.width / 2 : entity.height / 2
         const { x, y, z } = entity.position;
         return new AABB(-w, 0, -w, w, entity.height, w).offset(x, y, z);
     }
