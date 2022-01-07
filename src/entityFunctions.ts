@@ -23,7 +23,7 @@ export class EntityFunctions {
      * @returns boolean
      */
     isMainHandActive(entity?: Entity): boolean {
-        return ((entity ?? this.bot.entity).metadata[6] as any) === 1; //as any & (1 | 0)) === (1 | 0);
+        return ((entity ?? this.bot.entity).metadata[6] as any) === 2; //as any & (1 | 0)) === (1 | 0);
     }
 
     /**
@@ -33,7 +33,7 @@ export class EntityFunctions {
      * @returns boolean
      */
     isOffHandActive(entity?: Entity): boolean {
-        return ((entity ?? this.bot.entity).metadata[6] as any) === 1; //& (1 | 2)) === (1 | 2);
+        return ((entity ?? this.bot.entity).metadata[6] as any) === 3; //& (1 | 2)) === (1 | 2);
     }
 
     /**
@@ -47,7 +47,6 @@ export class EntityFunctions {
         const healthSlot = this.healthSlot; //metadata[this.healthSlot] ? this.healthSlot : metadata.findIndex((met) => Number(met) > 1 && Number(met) <= 20);
         let health = Number(metadata[healthSlot]);
         if (!health || health === 0) health = entity === this.bot.entity ? this.bot.entity.health ?? 0 : 0;
-        if (health === 0) console.log(this.healthSlot, entity.metadata);
         // console.log(health + (Number(metadata[this.healthSlot + 4]) ?? 0))
         return health + (Number(metadata[this.healthSlot + 4]) ?? 0);
     }

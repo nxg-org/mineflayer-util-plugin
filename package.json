@@ -16,7 +16,8 @@
     "types": "lib/index.d.ts",
     "scripts": {
         "build": "npx tsc",
-        "prepublish": "npm run build"
+        "prepublish": "npm run build",
+        "test": "node --trace-warnings lib/example.js"
     },
     "dependencies": {
         "minecraft-data": "^2.97.0",
