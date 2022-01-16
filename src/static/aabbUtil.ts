@@ -28,7 +28,7 @@ export namespace AABBUtils {
     }
     
     export function getPlayerAABB(entity: {position: Vec3}): AABB {
-        return getEntityAABBRaw({position: entity.position, height: 1.8, width: 0.3})
+        return getEntityAABBRaw({position: entity.position, height: 1.8, width: 0.6})
     }
     
     export function getEntityAABBRaw(entity: { position: Vec3; height: number; width?: number}) {

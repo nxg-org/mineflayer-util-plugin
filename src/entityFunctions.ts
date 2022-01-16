@@ -91,7 +91,7 @@ export class EntityFunctions {
     }
 
     getPlayerAABB(entity: { position: Vec3 }): AABB {
-        return this.getEntityAABBRaw({ position: entity.position, height: 1.8, width: 0.3 });
+        return this.getEntityAABBRaw({ position: entity.position, height: 1.8, width: 0.6 });
     }
 
     getEntityAABBRaw(entity: { position: Vec3; height: number; width?: number }) {
