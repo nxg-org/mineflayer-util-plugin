@@ -1,4 +1,7 @@
 import { Vec3 } from "vec3";
+function lerp(f: number, f2: number, f3: number) {
+    return f2 + f * (f3 - f2);
+}
 export class AABB {
     public minX: number;
     public minY: number;
@@ -20,7 +23,9 @@ export class AABB {
         return new AABB(min.x, min.y, min.z, max.x, max.y, max.z);
     }
 
-    
+    static fromBlock(min: Vec3) {
+        return new AABB( min.x, min.y, min.z, min.x + 1.0, min.y + 1.0, min.z + 1.0);
+    }
 
     set(x0: number, y0: number, z0: number, x1: number, y1: number, z1: number) {
         this.minX = x0;
@@ -49,15 +54,15 @@ export class AABB {
 
     toVertices() {
         return [
-            new Vec3(this.minX, this.minY, this.minZ), 
+            new Vec3(this.minX, this.minY, this.minZ),
             new Vec3(this.minX, this.minY, this.maxZ),
             new Vec3(this.minX, this.maxY, this.minZ),
             new Vec3(this.minX, this.maxY, this.maxZ),
-            new Vec3(this.maxX, this.minY, this.minZ), 
+            new Vec3(this.maxX, this.minY, this.minZ),
             new Vec3(this.maxX, this.minY, this.maxZ),
             new Vec3(this.maxX, this.maxY, this.minZ),
             new Vec3(this.maxX, this.maxY, this.maxZ),
-        ]
+        ];
     }
 
     floor() {
@@ -210,6 +215,16 @@ export class AABB {
         return lo > hi ? Infinity : lo;
     }
 
+    public intersect(aABB: AABB) {
+        const d = Math.max(this.minX, aABB.minX);
+        const d2 = Math.max(this.minY, aABB.minY);
+        const d3 = Math.max(this.minZ, aABB.minZ);
+        const d4 = Math.min(this.maxX, aABB.maxX);
+        const d5 = Math.min(this.maxY, aABB.maxY);
+        const d6 = Math.min(this.maxZ, aABB.maxZ);
+        return new AABB(d, d2, d3, d4, d5, d6);
+    }
+
     equals(other: AABB): boolean {
         return (
             this.minX === other.minX &&
@@ -221,19 +236,79 @@ export class AABB {
         );
     }
 
-    xzDistanceTo(pos: Vec3, heightOffset: number = 0): number {
+    xzDistanceToVec(pos: Vec3, heightOffset: number = 0): number {
         const { x, y, z } = pos.offset(0, heightOffset, 0);
         let dx = Math.max(this.minX - x, 0, x - this.maxX);
         let dz = Math.max(this.minZ - z, 0, z - this.maxZ);
         return Math.sqrt(dx * dx + dz * dz);
     }
 
-    distanceTo(pos: Vec3, heightOffset: number = 0): number {
+    distanceToVec(pos: Vec3, heightOffset: number = 0): number {
         const { x, y, z } = pos.offset(0, heightOffset, 0);
         let dx = Math.max(this.minX - x, 0, x - this.maxX);
         let dy = Math.max(this.minY - y, 0, y - this.maxY);
         let dz = Math.max(this.minZ - z, 0, z - this.maxZ);
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
+    }
+
+    public expandTowards(vec3: Vec3): AABB {
+        return this.expandTowardsCoords(vec3.x, vec3.y, vec3.z);
+    }
+
+    public expandTowardsCoords(d: number, d2: number, d3: number): AABB {
+        let d4 = this.minX;
+        let d5 = this.minY;
+        let d6 = this.minZ;
+        let d7 = this.maxX;
+        let d8 = this.maxY;
+        let d9 = this.maxZ;
+        if (d < 0.0) {
+            d4 += d;
+        } else if (d > 0.0) {
+            d7 += d;
+        }
+        if (d2 < 0.0) {
+            d5 += d2;
+        } else if (d2 > 0.0) {
+            d8 += d2;
+        }
+        if (d3 < 0.0) {
+            d6 += d3;
+        } else if (d3 > 0.0) {
+            d9 += d3;
+        }
+        return new AABB(d4, d5, d6, d7, d8, d9);
+    }
+
+    public moveCoords(d: number, d2: number, d3: number): AABB {
+        return new AABB(this.minX + d, this.minY + d2, this.minZ + d3, this.maxX + d, this.maxY + d2, this.maxZ + d3);
+    }
+
+    public move(vec3: Vec3): AABB {
+        return new AABB(
+            this.minX + vec3.x,
+            this.minY + vec3.y,
+            this.minZ + vec3.z,
+            this.maxX + vec3.x,
+            this.maxY + vec3.y,
+            this.maxZ + vec3.z
+        );
+    }
+
+    public intersectsCoords(d: number, d2: number, d3: number, d4: number, d5: number, d6: number): boolean {
+        return this.minX < d4 && this.maxX > d && this.minY < d5 && this.maxY > d2 && this.minZ < d6 && this.maxZ > d3;
+    }
+
+    public collidesAABB(aABB: AABB): boolean {
+        return this.collidesCoords(aABB.minX, aABB.minY, aABB.minZ, aABB.maxX, aABB.maxY, aABB.maxZ);
+    }
+
+    public collidesCoords(d: number, d2: number, d3: number, d4: number, d5: number, d6: number): boolean {
+        return this.minX <= d4 && this.maxX >= d && this.minY <= d5 && this.maxY >= d2 && this.minZ <= d6 && this.maxZ >= d3;
+    }
+
+    public  getCenter(): Vec3 {
+        return new Vec3(lerp(0.5, this.minX, this.maxX), lerp(0.5, this.minY, this.maxY), lerp(0.5, this.minZ, this.maxZ));
     }
 }
 
