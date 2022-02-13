@@ -2,6 +2,16 @@ import { Vec3 } from "vec3";
 function lerp(f: number, f2: number, f3: number) {
     return f2 + f * (f3 - f2);
 }
+
+
+// type RobPointsArrayFuckYou = [minX: number, minY: number, minZ: number, maxX: number, maxY: number, maxZ: number]
+type AABBPoints = [minX: number, minY: number, minZ: number, maxX: number, maxY: number, maxZ: number];
+type MinAndMaxPoints = [min: [x: number, y: number, z: number], max: [x: number, y: number, z: number]];
+type Vec3AABB = [min: Vec3, max: Vec3];
+
+
+
+
 export class AABB {
     public minX: number;
     public minY: number;
@@ -40,16 +50,16 @@ export class AABB {
         return new AABB(this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ);
     }
 
-    toArray() {
+    toArray(): AABBPoints {
         return [this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ];
     }
 
-    toMinAndMaxArrays() {
-        return { 0: [this.minX, this.minY, this.minZ], 1: [this.maxX, this.maxY, this.maxZ] };
+    toMinAndMaxArrays(): MinAndMaxPoints {
+        return [[this.minX, this.minY, this.minZ], [this.maxX, this.maxY, this.maxZ] ];
     }
 
-    toVecs() {
-        return { 0: new Vec3(this.minX, this.minY, this.minZ), 1: new Vec3(this.maxX, this.maxY, this.maxZ) };
+    toVecs(): Vec3AABB {
+        return [new Vec3(this.minX, this.minY, this.minZ),  new Vec3(this.maxX, this.maxY, this.maxZ) ];
     }
 
     toVertices() {
@@ -72,6 +82,7 @@ export class AABB {
         this.maxX = Math.floor(this.maxX);
         this.maxY = Math.floor(this.maxY);
         this.maxZ = Math.floor(this.maxZ);
+        return this;
     }
 
     extend(dx: number, dy: number, dz: number) {
@@ -236,18 +247,16 @@ export class AABB {
         );
     }
 
-    xzDistanceToVec(pos: Vec3, heightOffset: number = 0): number {
-        const { x, y, z } = pos.offset(0, heightOffset, 0);
-        let dx = Math.max(this.minX - x, 0, x - this.maxX);
-        let dz = Math.max(this.minZ - z, 0, z - this.maxZ);
+    xzDistanceToVec(pos: Vec3): number {
+        let dx = Math.max(this.minX - pos.x, 0, pos.x - this.maxX);
+        let dz = Math.max(this.minZ - pos.z, 0, pos.z - this.maxZ);
         return Math.sqrt(dx * dx + dz * dz);
     }
 
-    distanceToVec(pos: Vec3, heightOffset: number = 0): number {
-        const { x, y, z } = pos.offset(0, heightOffset, 0);
-        let dx = Math.max(this.minX - x, 0, x - this.maxX);
-        let dy = Math.max(this.minY - y, 0, y - this.maxY);
-        let dz = Math.max(this.minZ - z, 0, z - this.maxZ);
+    distanceToVec(pos: Vec3): number {
+        let dx = Math.max(this.minX - pos.x, 0, pos.x - this.maxX);
+        let dy = Math.max(this.minY - pos.y, 0, pos.y - this.maxY);
+        let dz = Math.max(this.minZ - pos.z, 0, pos.z - this.maxZ);
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
