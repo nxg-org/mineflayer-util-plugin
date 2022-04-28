@@ -237,10 +237,15 @@ macaddress@^0.5.1:
   resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.5.2.tgz#0ed6c836da3b182e4400bc4594083cdd33511cc4"
   integrity sha512-cYYBbT3b84hTEHssWE6OmsuqF/NiLXE2RGK9Sc9SwwE9kMoKrbaUAJtKs6ucd0FFgZjXE1Wm3hoGEEYas0N6EA==
 
-minecraft-data@^2.100.1, minecraft-data@^2.106.0, minecraft-data@^2.109.0, minecraft-data@^2.113.0, minecraft-data@^2.61.0, minecraft-data@^2.62.1, minecraft-data@^2.74.0, minecraft-data@^2.75.0, minecraft-data@^2.98.0:
+minecraft-data@^2.100.1, minecraft-data@^2.106.0, minecraft-data@^2.109.0, minecraft-data@^2.113.0, minecraft-data@^2.61.0, minecraft-data@^2.62.1, minecraft-data@^2.74.0, minecraft-data@^2.98.0:
   version "2.113.0"
   resolved "https://registry.yarnpkg.com/minecraft-data/-/minecraft-data-2.113.0.tgz#e761f710a1385b225414864332338102b2079951"
   integrity sha512-KvFyHOalKVBXYkzvzin7Li0hP1VaLrAJ3z+LipTVjZlda1HZ1Moa8rHfeNQk9ZwdgGnJdPqCL/mPlGYQlHRD2g==
+
+minecraft-data@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/minecraft-data/-/minecraft-data-3.1.1.tgz#b61cddfa4a7942695aa6231fac7148305f14458b"
+  integrity sha512-dB8IibYi7iygiNNXaC6JGSAc7UkDebq1rQ9AMZMaY8Y0VeSRnRl9qD3YlnK0Oz3ywtgHnHOyHT/tGIbX8pCPJQ==
 
 minecraft-folder-path@^1.2.0:
   version "1.2.0"
@@ -269,12 +274,12 @@ minecraft-protocol@^1.26.5:
     uuid-1345 "^1.0.1"
     yggdrasil "^1.4.0"
 
-mineflayer-pathfinder@^1.9.1:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/mineflayer-pathfinder/-/mineflayer-pathfinder-1.9.1.tgz#c9fea961b8f6fb48c81ba7c31e98bd37d07ea294"
-  integrity sha512-4mslXjn7NU5NNXUsYfieQwaycUzAg9Henzqs/ZaBT1Hc53VwmsQK1M2TEqFCOwdU8Q6Urk0LcY/87SBPIz8BZQ==
+mineflayer-pathfinder@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/mineflayer-pathfinder/-/mineflayer-pathfinder-2.1.1.tgz#8239a80835e376fb3c0cc0031a9fe713a3d44765"
+  integrity sha512-DpqaPbRzf3sievH8g/LXGwZ0jcwWCcRBpxP3egjIkI9ZaTgk6+Kpzm53DcfZqAzl54UoqXl2BZ5HU9PfGOTZtQ==
   dependencies:
-    minecraft-data "^2.75.0"
+    minecraft-data "^3.1.1"
     prismarine-block "^1.7.3"
     prismarine-entity "^2.0.0"
     prismarine-item "^1.5.0"
