@@ -46,9 +46,7 @@ export class FilterFunctions {
         return FilterFunctions.getNearestEntity(bot, (e: Entity) => e.name === "ender_crystal");
     }
 
-    entityAtPosition(position: Vec3) {
+    crystalAtPosition(position: Vec3) {
         return this.getNearestEntity((entity: Entity) => entity.position.offset(-0.5, -1, -0.5).equals(position));
     }
-
-    static entityAtPosition(bot: Bot, position: Vec3) {}
 }

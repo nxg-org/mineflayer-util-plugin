@@ -5,8 +5,10 @@ import { RaycastIterator } from "./iterators";
 
 type Iteration = { x: number; y: number; z: number; face: number };
 type BlockAndIterations = { block: Block | null; iterations: Iteration[] };
+
+
 export class InterceptFunctions {
-    constructor(private bot: Bot) {}
+    constructor(private bot: Bot) { }
 
     //Old ver grabs range between the two + direction from... from to... to.
     //calls raycast.
@@ -17,6 +19,7 @@ export class InterceptFunctions {
         if (isNaN(range)) return { block: null, iterations: [] };
         return this.raycast(from, direction, range);
     }
+
     raycast(from: Vec3, direction: Vec3, range: number): BlockAndIterations {
         const iterations: Iteration[] = [];
         const iter = new RaycastIterator(from, direction, range);

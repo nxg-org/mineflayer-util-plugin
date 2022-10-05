@@ -68,8 +68,8 @@ export class InventoryFunctions {
     getAllItemsExceptCurrent(current: EquipmentDestination): Item[] {
         return [
             ...this.bot.inventory.items(),
-            ...["hand", "head", "torso", "legs", "feet", "off-hand"]
-                .filter((name) => name !== current)
+            ...(["hand", "head", "torso", "legs", "feet", "off-hand"]
+                .filter((name) => name !== current))
                 .map((name) => this.bot.inventory.slots[this.bot.getEquipmentDestSlot(name)]),
         ].filter((e) => !!e);
     }

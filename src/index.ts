@@ -7,22 +7,8 @@ declare module "mineflayer" {
     interface Bot {
         util: UtilFunctions;
     }
-
-    interface BotEvents {
-        startedEquippingMainHand: () => void;
-        startedEquippingOffHand: () => void;
-        stoppedEquippingMainHand: () => void;
-        stoppedEquippingOffHand: () => void;
-        startedEquippingOtherSlot: () => void;
-        stoppedEquippingOtherSlot: () => void;
-    }
 }
 
-declare module "prismarine-entity" {
-    // interface Entity {
-    //     attributes: { [index: string]: { value: number; modifiers: any[] } };
-    // }
-}
 
 export default function inject(bot: Bot) {
     if (!bot.pathfinder) bot.loadPlugin(pathfinder)
@@ -32,4 +18,5 @@ export default function inject(bot: Bot) {
 
 export { AABB } from "./calcs/aabb";
 export { InterceptFunctions } from "./calcs/intercept"
+export {RaycastIterator, BlockFace} from "./calcs/iterators"
 export {AABBUtils, MathUtils} from "./static"

@@ -1,15 +1,17 @@
 import { Bot } from "mineflayer";
 import { Vec3 } from "vec3";
 
-const PI = Math.PI;
-const PI_2 = Math.PI * 2;
-const TO_RAD = PI / 180;
-const TO_DEG = 1 / TO_RAD;
-const FROM_NOTCH_BYTE = 360 / 256;
-// From wiki.vg: Velocity is believed to be in units of 1/8000 of a block per server tick (50ms)
-const FROM_NOTCH_VEL = 1 / 8000;
 
 export namespace MathUtils {
+
+
+    const PI = Math.PI;
+    const PI_2 = Math.PI * 2;
+    export const TO_RAD = PI / 180;
+    export const TO_DEG = 1 / TO_RAD;
+    export const FROM_NOTCH_BYTE = 360 / 256;
+    // From wiki.vg: Velocity is believed to be in units of 1/8000 of a block per server tick (50ms)
+    export const FROM_NOTCH_VEL = 1 / 8000;
 
     export const toNotchianYaw = (yaw: number) => toDegrees(PI - yaw);
     export const toNotchianPitch = (pitch: number) => toDegrees(-pitch);

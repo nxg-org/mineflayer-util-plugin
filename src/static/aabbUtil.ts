@@ -21,7 +21,7 @@ export namespace AABBUtils {
                 return getPlayerAABB({position: entity.position})
             case "mob":
             default: //TODO: Implement better AABBs. However, this may just be correct.
-                return getEntityAABBRaw({position: entity.position, height: entity.height, width: entity.width ?? entity.height})
+                return getEntityAABBRaw({position: entity.position, height: entity.height, width: entity.width})
     
         }
     
