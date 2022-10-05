@@ -60,7 +60,7 @@ export class MovementFunctions {
      * @param entity Prismarine-Entity Entity
      * @returns have the goals changed.
      */
-    retreatFromEntity(entity: any, distance: number, dynamic: boolean = true): boolean {
+    retreatFromEntity(entity: Entity, distance: number, dynamic: boolean = true): boolean {
         const oldGoals = this.goalArray.goals.length;
         this.goalArray.goals = this.goalArray.goals.filter(
             (goal: any) => goal.goal?.entity?.id === entity.id && goal.goal?.rangeSq === distance * distance
@@ -79,7 +79,7 @@ export class MovementFunctions {
      * @param entity Prismarine-Entity Entity
      * @returns have the goals changed
      */
-    followEntityWithRespectRange(entity: any, followDistance: number, invertDistance?: number): boolean {
+    followEntityWithRespectRange(entity: Entity, followDistance: number, invertDistance?: number): boolean {
         const oldGoals = this.goalArray.goals.length;
         this.goalArray.goals = (this.goalArray.goals as any[]).filter((goal) => {
             return goal.entity?.id === entity.id && goal.rangeSq === followDistance * followDistance;
