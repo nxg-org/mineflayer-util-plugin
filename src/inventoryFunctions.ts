@@ -1,7 +1,6 @@
 import { Bot, EquipmentDestination } from "mineflayer";
 import { Item } from "prismarine-item";
 import { promisify } from "util";
-import { BuiltInPriorityOptions } from "./utilFunctions";
 const sleep = promisify(setTimeout);
 
 /**
@@ -26,8 +25,8 @@ export class InventoryFunctions {
 
     public set equippingOtherSlot(value: boolean) {
         if (this._equippingOtherSlot === value) return;
-        if (value) this.bot.emit("startedEquippingOtherSlot");
-        else this.bot.emit("stoppedEquippingOtherSlot");
+        // if (value) this.bot.emit("startedEquippingOtherSlot");
+        // else this.bot.emit("stoppedEquippingOtherSlot");
         this._equippingOtherSlot = value;
     }
 
@@ -37,8 +36,8 @@ export class InventoryFunctions {
 
     public set equippingMainHand(value: boolean) {
         if (this._equippingMainHand === value) return;
-        if (value) this.bot.emit("startedEquippingMainHand");
-        else this.bot.emit("stoppedEquippingMainHand");
+        // if (value) this.bot.emit("startedEquippingMainHand");
+        // else this.bot.emit("stoppedEquippingMainHand");
         this._equippingMainHand = value;
     }
 
@@ -48,8 +47,8 @@ export class InventoryFunctions {
 
     public set equippingOffHand(value: boolean) {
         if (this._equippingOffHand === value) return;
-        if (value) this.bot.emit("startedEquippingOffHand");
-        else this.bot.emit("stoppedEquippingOffHand");
+        // if (value) this.bot.emit("startedEquippingOffHand");
+        // else this.bot.emit("stoppedEquippingOffHand");
         this._equippingOffHand = value;
     }
 
@@ -104,64 +103,6 @@ export class InventoryFunctions {
         return false;
     }
 
-    async equipItem(name: string, dest: EquipmentDestination, options: BuiltInPriorityOptions): Promise<number> {
-        if (this.bot.inventory.slots[this.bot.getEquipmentDestSlot(dest)]?.name.includes(name)) return 1;
-        const item = this.getAllItemsExceptCurrent(dest).find((item) => item?.name.includes(name));
-        if (!!item) {
-            await this.bot.util.builtInsPriority(options, this.bot.equip, item, dest);
-            return 0;
-        }
-        return 2;
-    }
-
-    async equipMainHand(name: string, options: BuiltInPriorityOptions = { group: "inventory", priority: 1 }): Promise<number> {
-        while (this._equippingMainHand) {
-            await sleep(0);
-        }
-        return await this.equipMainHandNoWait(name, options);
-    }
-
-    async equipOffHand(name: string, options: BuiltInPriorityOptions = { group: "inventory", priority: 1 }): Promise<number> {
-        while (this._equippingOffHand) {
-            await sleep(0);
-        }
-        return await this.equipOffHandNoWait(name, options);
-    }
-
-    async equipSlot(
-        name: string,
-        destination: EquipmentDestination,
-        options: BuiltInPriorityOptions = { group: "inventory", priority: 1 }
-    ): Promise<number> {
-        while (this._equippingOtherSlot) {
-            await sleep(0);
-        }
-        return await this.equipSlotNoWait(name, destination, options);
-    }
-
-    async equipMainHandNoWait(name: string, options: BuiltInPriorityOptions): Promise<number> {
-        if (this._equippingMainHand) return 3;
-        this._equippingMainHand = true;
-        const result = await this.equipItem(name, "hand", options);
-        this._equippingMainHand = false;
-        return result;
-    }
-
-    async equipOffHandNoWait(name: string, options: BuiltInPriorityOptions): Promise<number> {
-        if (this._equippingOffHand) return 3;
-        this.equippingOffHand = true;
-        const result = await this.equipItem(name, "off-hand", options);
-        this.equippingOffHand = false;
-        return result;
-    }
-
-    async equipSlotNoWait(name: string, dest: EquipmentDestination, options: BuiltInPriorityOptions) {
-        if (this._equippingOtherSlot) return 3;
-        this.equippingOtherSlot = true;
-        const result = await this.equipItem(name, dest, options);
-        this.equippingOtherSlot = false;
-        return result;
-    }
 
     async customEquip(item: Item, destination: EquipmentDestination, retries: number = 1) {
         for (let i = 0; i < retries; i++) {

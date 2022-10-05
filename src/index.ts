@@ -1,5 +1,5 @@
 import type { Bot } from "mineflayer";
-import { UtilFunctions } from "./utilFunctions";
+import { UtilFunctions } from "./utilFunctions"
 import {pathfinder} from "mineflayer-pathfinder"
 
 declare module "mineflayer" {
@@ -27,6 +27,7 @@ declare module "prismarine-entity" {
 export default function inject(bot: Bot) {
     if (!bot.pathfinder) bot.loadPlugin(pathfinder)
     bot.util = new UtilFunctions(bot);
+  
 }
 
 export { AABB } from "./calcs/aabb";

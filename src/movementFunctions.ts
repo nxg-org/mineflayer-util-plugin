@@ -1,6 +1,6 @@
 import type { Bot } from "mineflayer";
-import type { Entity } from "prismarine-entity";
 import type { Vec3 } from "vec3";
+import type { Entity } from "prismarine-entity";
 import { goals, Movements } from "mineflayer-pathfinder";
 import md from "minecraft-data";
 
@@ -60,7 +60,7 @@ export class MovementFunctions {
      * @param entity Prismarine-Entity Entity
      * @returns have the goals changed.
      */
-    retreatFromEntity(entity: Entity, distance: number, dynamic: boolean = true): boolean {
+    retreatFromEntity(entity: any, distance: number, dynamic: boolean = true): boolean {
         const oldGoals = this.goalArray.goals.length;
         this.goalArray.goals = this.goalArray.goals.filter(
             (goal: any) => goal.goal?.entity?.id === entity.id && goal.goal?.rangeSq === distance * distance
@@ -79,7 +79,7 @@ export class MovementFunctions {
      * @param entity Prismarine-Entity Entity
      * @returns have the goals changed
      */
-    followEntityWithRespectRange(entity: Entity, followDistance: number, invertDistance?: number): boolean {
+    followEntityWithRespectRange(entity: any, followDistance: number, invertDistance?: number): boolean {
         const oldGoals = this.goalArray.goals.length;
         this.goalArray.goals = (this.goalArray.goals as any[]).filter((goal) => {
             return goal.entity?.id === entity.id && goal.rangeSq === followDistance * followDistance;

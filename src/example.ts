@@ -9,7 +9,6 @@ const bot = createBot({
     username: "utilTesting",
     host: process.argv[2] ?? "localhost",
     port: Number(process.argv[3]) ?? 25565,
-    version: "1.17.1",
 });
 
 bot.loadPlugin(shit);
@@ -37,7 +36,7 @@ bot.on("chat", async (username, message) => {
             bot.chat(`${health}`);
             break;
 
-        case "WhatAmILookingAt":
+        case "whatAmILookingAt":
             target = bot.nearestEntity((e) => (e.username ?? e.name) === username);
             if (!target) return console.log("no entity");
             const player = bot.util.raytrace.entityAtEntityCursor(target, 256);

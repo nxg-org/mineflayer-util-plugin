@@ -7,11 +7,6 @@ export class EntityFunctions {
     healthSlot: number = 7;
     constructor(public bot: Bot) {
         this.bot.on("spawn", async () => {
-            // await this.bot.util.sleep(1000)
-            // const slot = this.bot.entity.metadata.slice(5).findIndex((data) => Number(data) === 20);
-            // if (slot > 0) {
-            //     this.healthSlot = slot + 5;
-            // }
             this.healthSlot = Number(this.bot.version.split(".")[1]) <= 16 ? 7 : 9;
         });
     }
@@ -44,10 +39,8 @@ export class EntityFunctions {
     getHealth(entity?: Entity): number {
         entity ??= this.bot.entity;
         const metadata = entity.metadata;
-        const healthSlot = this.healthSlot; //metadata[this.healthSlot] ? this.healthSlot : metadata.findIndex((met) => Number(met) > 1 && Number(met) <= 20);
-        let health = Number(metadata[healthSlot]);
+        let health = Number(metadata[this.healthSlot]);
         if (!health || health === 0) health = entity === this.bot.entity ? this.bot.entity.health ?? 0 : 0;
-        // console.log(health + (Number(metadata[this.healthSlot + 4]) ?? 0))
         return health + (Number(metadata[this.healthSlot + 4]) ?? 0);
     }
 
@@ -68,16 +61,21 @@ export class EntityFunctions {
     getHealthChange(packetMetadata: any, entity: Entity) {
         const oldHealth = this.getHealthFromMetadata(entity.metadata);
         const newHealth = this.getHealthFromMetadata(this.parseMetadata(packetMetadata, entity.metadata));
-        return -(oldHealth - newHealth);
+        return newHealth - oldHealth;
     }
 
     getDistanceToEntity(entity: Entity): number {
-        return this.getDistanceBetweenEntities(this.bot.entity, entity);
+        return this.bot.entity.position.distanceTo(entity.position);
     }
 
-    getDistanceBetweenEntities(first: Entity, second: Entity): number {
-        return first.position.distanceTo(second.position);
+    getEyeDistanceToEntity(entity: Entity): number {
+        return this.getEntityAABB(entity).distanceToVec(this.bot.entity.position.offset(0, 1.62, 0));
     }
+
+    getEyeDistanceBetweenEntities(first: Entity, second: Entity): number {
+        return this.getEntityAABB(second).distanceToVec(first.position.offset(0, first.height, 0));
+    }
+    
 
     getEntityAABB(entity: { type: string; position: Vec3; height: number; width?: number }): AABB {
         switch (entity.type) {
@@ -86,7 +84,7 @@ export class EntityFunctions {
             case "mob":
             default:
                 //TODO: Implement better AABBs. However, this may just be correct.
-                return this.getEntityAABBRaw({ position: entity.position, height: entity.height, width: entity.width ?? entity.height });
+                return this.getEntityAABBRaw({ position: entity.position, height: entity.height, width: entity.width });
         }
     }
 
