@@ -11,7 +11,7 @@ declare module "mineflayer" {
 
 
 export default function inject(bot: Bot) {
-    if (!bot.pathfinder) bot.loadPlugin(pathfinder)
+    if (!bot.hasPlugin(pathfinder)) bot.loadPlugin(pathfinder)
     bot.util = new UtilFunctions(bot);
   
 }
