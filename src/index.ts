@@ -1,17 +1,17 @@
 import type { Bot } from "mineflayer";
 import { UtilFunctions } from "./utilFunctions"
-import {pathfinder} from "mineflayer-pathfinder"
+import md from "minecraft-data"
 
 declare module "mineflayer" {
-    type PrioGroups = "inventory" | "movement";
+
     interface Bot {
         util: UtilFunctions;
+        registry: md.IndexedData;
     }
 }
 
 
 export default function inject(bot: Bot) {
-    if (!bot.hasPlugin(pathfinder)) bot.loadPlugin(pathfinder)
     bot.util = new UtilFunctions(bot);
   
 }

@@ -1,4 +1,4 @@
-import type { Bot, EquipmentDestination, PrioGroups } from "mineflayer";
+import type { Bot, EquipmentDestination } from "mineflayer";
 import { EntityFunctions } from "./entityFunctions";
 import { FilterFunctions } from "./filterFunctions";
 import { InventoryFunctions } from "./inventoryFunctions";

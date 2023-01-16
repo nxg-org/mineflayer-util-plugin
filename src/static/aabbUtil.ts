@@ -1,7 +1,6 @@
-import type { Bot } from "mineflayer";
 import type { Block } from "prismarine-block";
-import { AABB } from "../calcs/aabb";
 import type { Vec3 } from "vec3";
+import { AABB } from "../calcs/aabb";
 
 
 export namespace AABBUtils {
@@ -22,9 +21,7 @@ export namespace AABBUtils {
             case "mob":
             default: //TODO: Implement better AABBs. However, this may just be correct.
                 return getEntityAABBRaw({position: entity.position, height: entity.height, width: entity.width})
-    
         }
-    
     }
     
     export function getPlayerAABB(entity: {position: Vec3}): AABB {

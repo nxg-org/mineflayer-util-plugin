@@ -1,7 +1,7 @@
 import { Bot } from "mineflayer";
+import type { Entity } from "prismarine-entity";
 import { Vec3 } from "vec3";
 import { RaycastIterator } from "./calcs/iterators";
-import type { Entity } from "prismarine-entity";
 
 function getViewDirection(pitch: number, yaw: number) {
     const csPitch = Math.cos(pitch);
@@ -28,7 +28,7 @@ export class RayTraceFunctions {
         return this.entityAtEntityCursor(this.bot.entity, maxDistance);
     }
 
-    entityAtEntityCursor(entity: Entity, maxDistance: number = 3.5) {
+    entityAtEntityCursor(entity: Entity, maxDistance: number = 3.5): Entity | null {
         const block = this.blockAtEntityCursor(entity, maxDistance);
         maxDistance = block?.intersect.distanceTo(this.bot.entity.position) ?? maxDistance;
 

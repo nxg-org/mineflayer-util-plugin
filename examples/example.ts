@@ -1,5 +1,5 @@
 import { createBot, EquipmentDestination } from "mineflayer";
-import shit from "./index";
+import shit from "../src/index";
 import { Vec3 } from "vec3";
 import type { Entity } from "prismarine-entity";
 
@@ -52,23 +52,6 @@ bot.on("chat", async (username, message) => {
                     bot.chat("You're not looking at anything.");
                 }
             }
-
-            break;
-        case "come":
-            target = bot.nearestEntity((e) => (e.username ?? e.name) === username);
-            if (!target) return console.log("no entity");
-            if (!bot.pathfinder) bot.chat("pathfinder is not loaded!");
-            bot.util.move.followEntityWithRespectRange(target, 1);
-            break;
-        case "follow":
-            target = bot.nearestEntity((e) => (e.username ?? e.name) === split[1]);
-            if (!target) return console.log("no entity");
-            if (!bot.pathfinder) bot.chat("pathfinder is not loaded!");
-            bot.util.move.followEntityWithRespectRange(target, 1);
-            break;
-        case "stop":
-            if (!bot.pathfinder) bot.chat("pathfinder is not loaded!");
-            bot.util.move.stop();
             break;
         default:
             console.log(username, bot.entity.username);

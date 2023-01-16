@@ -64,14 +64,10 @@ export namespace MathUtils {
 
     //Scuffed.
     export function yawPitchAndSpeedToDir(yaw: number, pitch: number, speed: number) {
-        const thetaY = PI + yaw;
-        const thetaP = pitch;
-        const x = speed * Math.sin(thetaY)
-        const y = speed * Math.sin(thetaP)
-        const z = speed * Math.cos(thetaY)
-        const VxMag = Math.sqrt(x * x + z * z)
-        const VxRatio = Math.sqrt(VxMag * VxMag - y * y)
-        const allRatio = VxRatio / VxMag
-        return new Vec3(x * allRatio, y, z * allRatio);
+        return new Vec3(
+            -Math.sin(yaw) * Math.cos(pitch),
+            Math.sin(pitch),
+            -Math.cos(yaw) * Math.cos(pitch)
+        ).scale(speed);
     }
 }
