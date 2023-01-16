@@ -2,6 +2,7 @@
 .gitignore
 .github/
 src/
+examples/
 lib/example.*
 tsconfig.json
 
