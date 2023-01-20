@@ -19,6 +19,7 @@
         "prepublish": "npm run build",
         "test": "ts-node examples/example.ts"
     },
+    "dependencies": {},
     "devDependencies": {
         "@types/node": "^17.0.4",
         "mineflayer": "^4.7.0",
