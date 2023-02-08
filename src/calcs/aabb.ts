@@ -8,6 +8,8 @@ type AABBPoints = [minX: number, minY: number, minZ: number, maxX: number, maxY:
 type MinAndMaxPoints = [min: [x: number, y: number, z: number], max: [x: number, y: number, z: number]];
 type Vec3AABB = [min: Vec3, max: Vec3];
 
+const emptyVec = new Vec3(0, 0, 0)
+
 export class AABB {
   public minX: number;
   public minY: number;
@@ -33,6 +35,10 @@ export class AABB {
     return new AABB(min.x, min.y, min.z, min.x + 1.0, min.y + 1.0, min.z + 1.0);
   }
 
+
+  static fromShape(pts: AABBPoints, offset = emptyVec) {
+    return new AABB(pts[0], pts[1], pts[2], pts[3], pts[4], pts[5]).offsetVec(offset)
+  }
 
   set(x0: number, y0: number, z0: number, x1: number, y1: number, z1: number) {
     this.minX = x0;
