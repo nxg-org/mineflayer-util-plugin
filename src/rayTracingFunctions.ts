@@ -12,10 +12,11 @@ export class RayTraceFunctions {
   constructor(private bot: Bot) {}
 
   entityRaytrace(startPos: Vec3, dir: Vec3, maxDistance = 3.5, matcher?: (e: Entity) => boolean) {
+    matcher ||= (e) => true;
     const aabbMap: { [id: string]: AABB } = {};
 
     Object.values(this.bot.entities)
-      .filter((e) => e.username !== this.bot.entity.username)
+      .filter((e) => e.username !== this.bot.entity.username && matcher!(e))
       .forEach((e) => (aabbMap[e.id] = AABBUtils.getEntityAABB(e)));
 
     return this.entityRaytraceRaw(startPos, dir, aabbMap, maxDistance, matcher);
@@ -30,6 +31,8 @@ export class RayTraceFunctions {
   ): EntityRaycastReturn | null {
 
     matcher ||= (e) => true;
+    
+    const eyePos = this.bot.entity.position.offset(0, this.bot.entity.height, 0);
     Object.entries(aabbMap).forEach(([id, bb]) => {
       if (bb.distanceToVec(eyePos) > maxDistance) delete aabbMap[id];
     });
@@ -39,7 +42,7 @@ export class RayTraceFunctions {
     if (returnVal && Object.keys(aabbMap).length === 0) return returnVal;
     maxDistance = returnVal?.intersect.distanceTo(startPos) ?? maxDistance;
 
-    const eyePos = this.bot.entity.position.offset(0, this.bot.entity.height, 0);
+
     const iterator = new RaycastIterator(startPos, dir, maxDistance);
 
     for (const id in aabbMap) {
