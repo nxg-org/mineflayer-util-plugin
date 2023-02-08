@@ -1,12 +1,9 @@
-import type { Bot, EquipmentDestination } from "mineflayer";
+import type { Bot } from "mineflayer";
 import { EntityFunctions } from "./entityFunctions";
 import { FilterFunctions } from "./filterFunctions";
 import { InventoryFunctions } from "./inventoryFunctions";
 import { MovementFunctions } from "./movementFunctions";
-import { promisify } from "util";
 import { PredictiveFunctions } from "./predictiveFunctions";
-import { MathFunctions } from "./mathUtil";
-import { WorldFunctions } from "./WorldFunctions";
 import { RayTraceFunctions } from "./rayTracingFunctions";
 
 /**
@@ -33,8 +30,6 @@ export class UtilFunctions {
     public entity: EntityFunctions;
     public predict: PredictiveFunctions;
     public filters: FilterFunctions;
-    public math: MathFunctions;
-    public world: WorldFunctions;
     public raytrace: RayTraceFunctions;
     constructor(public bot: Bot) {
         this.inv = new InventoryFunctions(bot);
@@ -42,10 +37,6 @@ export class UtilFunctions {
         this.entity = new EntityFunctions(bot);
         this.predict = new PredictiveFunctions(bot);
         this.filters = new FilterFunctions(bot);
-        this.world = new WorldFunctions(bot);
         this.raytrace = new RayTraceFunctions(bot);
-        this.math = new MathFunctions();
     }
-
-    sleep = promisify(setTimeout);
 }

@@ -17,15 +17,21 @@ export namespace AABBUtils {
     export function getEntityAABB(entity: {type: string, position: Vec3, height: number,  width?: number}): AABB {
         switch (entity.type) {
             case "player":
-                return getPlayerAABB({position: entity.position})
+                return getEntityAABBRaw({position: entity.position, height: entity.height + 0.18, width: entity.width})
             case "mob":
             default: //TODO: Implement better AABBs. However, this may just be correct.
                 return getEntityAABBRaw({position: entity.position, height: entity.height, width: entity.width})
         }
     }
     
-    export function getPlayerAABB(entity: {position: Vec3}): AABB {
-        return getEntityAABBRaw({position: entity.position, height: 1.8, width: 0.6})
+    export function getPlayerAABB(entity: { position: Vec3, height?: number, width?: number }): AABB {
+        const w = entity.width ? entity.width / 2 : 0.6 
+        const { x, y, z } = entity.position;
+        return new AABB(-w, 0, -w, w, entity.height ? entity.height + 0.18 : 1.8, w).offset(x, y, z);
+    }
+
+    export function getPlayerAABBRaw(position: Vec3, height = 1.8): AABB {
+        return new AABB(-0.6, 0, -0.6, 0.6, height, 0.6).offsetVec(position);
     }
     
     export function getEntityAABBRaw(entity: { position: Vec3; height: number; width?: number}) {

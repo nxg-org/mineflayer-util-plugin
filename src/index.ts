@@ -1,15 +1,18 @@
 import type { Bot } from "mineflayer";
 import { UtilFunctions } from "./utilFunctions"
-import md from "minecraft-data"
 
 declare module "mineflayer" {
 
     interface Bot {
         util: UtilFunctions;
-        registry: md.IndexedData;
     }
 }
 
+declare module "prismarine-entity" {
+    interface Entity {
+        attributes: { [index: string]: { value: number; modifiers: any[] } };
+    }
+}
 
 export default function inject(bot: Bot) {
     bot.util = new UtilFunctions(bot);

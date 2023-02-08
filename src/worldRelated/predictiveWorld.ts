@@ -1,7 +1,9 @@
 import type { Bot } from "mineflayer";
 import type { Block } from "prismarine-block";
 import { Vec3 } from "vec3";
+import AABB from "../calcs/aabb";
 import { RaycastIterator } from "../calcs/iterators";
+import { AABBUtils } from "../static";
 
 export type Overwrites = { [coord: string]: Block | null };
 
@@ -12,7 +14,10 @@ export type Overwrites = { [coord: string]: Block | null };
  */
 export class PredictiveWorld {
     private blocks: Overwrites = {};
-    constructor(public bot: Bot) {}
+    private originalWorld: any;
+    constructor(bot: Bot) {
+        this.originalWorld = bot.world;
+    }
 
     raycast(from: Vec3, direction: Vec3, range: number, matcher: ((block: Block) => boolean) | null = null) {
         const iter = new RaycastIterator(from, direction, range);
@@ -52,19 +57,19 @@ export class PredictiveWorld {
 
     /**
      * @param {Vec3} pos
-     * @returns {Block} Block at position.
+     * @returns {Block | null} Block at position.
      */
-    getBlock(pos: Vec3) {
+    getBlock(pos: Vec3): Block | null {
         const pblock = this.blocks[pos.toString()];
         if (pblock !== undefined && pblock !== null) return pblock;
-        return this.bot.blockAt(pos);
+        return this.originalWorld.getBlock(pos) ?? null;
     }
 
     removeBlock(pos: Vec3, force: boolean) {
         if (force) {
             delete this.blocks[pos.toString()];
         } else {
-            const realBlock = this.bot.blockAt(pos);
+            const realBlock = this.originalWorld.getBlock(pos);
             if (realBlock) this.blocks[pos.toString()] = realBlock;
             else delete this.blocks[pos.toString()];
         }
@@ -80,19 +85,20 @@ export class PredictiveWorld {
      * @param block bot.block
      * @returns List of affected blocks that potentially protect the entity.
      */
-    getExplosionAffectedBlocks(playerPos: Vec3, explosionPos: Vec3): Overwrites {
+    getExplosionAffectedBlocks(entityBB: AABB, explosionPos: Vec3): Overwrites {
         let blocks: Overwrites = {};
-        const dx = 1 / (0.6 * 2 + 1);
-        const dy = 1 / (1.8 * 2 + 1);
-        const dz = 1 / (0.6 * 2 + 1);
+        const {x: xWidth, y: yWidth, z: zWidth} = entityBB.heightAndWidths();
+        const dx = 1 / (xWidth * 2 + 1);
+        const dy = 1 / (yWidth * 2 + 1);
+        const dz = 1 / (zWidth * 2 + 1);
 
         const d3 = (1 - Math.floor(1 / dx) * dx) / 2;
         const d4 = (1 - Math.floor(1 / dz) * dz) / 2;
 
         const pos = new Vec3(0, 0, 0);
-        for (pos.y = playerPos.y; pos.y <= playerPos.y + 1.8; pos.y += 1.8 * dy) {
-            for (pos.x = playerPos.x - 0.3 + d3; pos.x <= playerPos.x + 0.3; pos.x += 0.6 * dx) {
-                for (pos.z = playerPos.z - 0.3 + d4; pos.z <= playerPos.z + 0.3; pos.z += 0.6 * dz) {
+        for (pos.y = entityBB.minY; pos.y <= entityBB.maxY; pos.y += yWidth * dy) {
+            for (pos.x = entityBB.minX + d3; pos.x <= entityBB.maxX; pos.x += xWidth * dx) {
+              for (pos.z = entityBB.minZ + d4; pos.z <= entityBB.maxZ; pos.z += zWidth * dz) {
                     const dir = pos.minus(explosionPos);
                     const range = dir.norm();
                     const potentialBlock = this.raycast(explosionPos, dir.normalize(), range);
@@ -103,7 +109,7 @@ export class PredictiveWorld {
         return blocks;
     }
 
-    loadExplosionAffectedBlocks(playerPos: Vec3, explosionPos: Vec3) {
-        this.setBlocks(this.getExplosionAffectedBlocks(playerPos, explosionPos));
+    loadProtectiveBlocks(playerPos: Vec3, explosionPos: Vec3) {
+        this.setBlocks(this.getExplosionAffectedBlocks(AABBUtils.getPlayerAABBRaw(playerPos), explosionPos));
     }
 }

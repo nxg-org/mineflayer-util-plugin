@@ -2,13 +2,12 @@ import type { Bot } from "mineflayer";
 import type { Entity } from "prismarine-entity";
 import type { Vec3 } from "vec3";
 import { AABB } from "./calcs/aabb";
+import { AABBUtils } from "./static";
 
 export class EntityFunctions {
     healthSlot: number = 7;
     constructor(public bot: Bot) {
-        this.bot.on("spawn", async () => {
-            this.healthSlot = Number(this.bot.version.split(".")[1]) <= 16 ? 7 : 9;
-        });
+       this.healthSlot = Number(this.bot.version.split(".")[1]) <= 16 ? 7 : 9;
     }
 
     /**
@@ -64,40 +63,18 @@ export class EntityFunctions {
         return newHealth - oldHealth;
     }
 
-    getDistanceToEntity(entity: Entity): number {
+    entityDistance(entity: Entity): number {
         return this.bot.entity.position.distanceTo(entity.position);
     }
 
-    getEyeDistanceToEntity(entity: Entity): number {
-        return this.getEntityAABB(entity).distanceToVec(this.bot.entity.position.offset(0, 1.62, 0));
+    eyeDistanceToEntity(entity: Entity): number {
+        return AABBUtils.getEntityAABB(entity).distanceToVec(this.bot.entity.position.offset(0, this.bot.entity.height, 0));
     }
 
-    getEyeDistanceBetweenEntities(first: Entity, second: Entity): number {
-        return this.getEntityAABB(second).distanceToVec(first.position.offset(0, first.height, 0));
+    eyeDistanceBetweenEntities(first: Entity, second: Entity): number {
+        return AABBUtils.getEntityAABB(second).distanceToVec(first.position.offset(0, first.height, 0));
     }
     
-
-    getEntityAABB(entity: { type: string; position: Vec3; height: number; width?: number }): AABB {
-        switch (entity.type) {
-            case "player":
-                return this.getPlayerAABB({ position: entity.position });
-            case "mob":
-            default:
-                //TODO: Implement better AABBs. However, this may just be correct.
-                return this.getEntityAABBRaw({ position: entity.position, height: entity.height, width: entity.width });
-        }
-    }
-
-    getPlayerAABB(entity: { position: Vec3 }): AABB {
-        return this.getEntityAABBRaw({ position: entity.position, height: 1.8, width: 0.6 });
-    }
-
-    getEntityAABBRaw(entity: { position: Vec3; height: number; width?: number }) {
-        const w = entity.width ? entity.width / 2 : entity.height / 2;
-        const { x, y, z } = entity.position;
-        return new AABB(-w, 0, -w, w, entity.height, w).offset(x, y, z);
-    }
-
     private parseMetadata(packetMetadata: any, entityMetadata: any = {}) {
         if (packetMetadata !== undefined) {
             for (const { key, value } of packetMetadata) {
