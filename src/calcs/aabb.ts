@@ -4,11 +4,12 @@ function lerp(f: number, f2: number, f3: number) {
 }
 
 // type RobPointsArrayFuckYou = [minX: number, minY: number, minZ: number, maxX: number, maxY: number, maxZ: number]
+type FakeVec3 = { x: number; y: number; z: number };
 type AABBPoints = [minX: number, minY: number, minZ: number, maxX: number, maxY: number, maxZ: number];
 type MinAndMaxPoints = [min: [x: number, y: number, z: number], max: [x: number, y: number, z: number]];
 type Vec3AABB = [min: Vec3, max: Vec3];
 
-const emptyVec = new Vec3(0, 0, 0)
+const emptyVec = new Vec3(0, 0, 0);
 
 export class AABB {
   public minX: number;
@@ -27,17 +28,16 @@ export class AABB {
     this.maxZ = z1;
   }
 
-  static fromVecs(min: Vec3, max: Vec3) {
+  static fromVecs(min: FakeVec3, max: FakeVec3) {
     return new AABB(min.x, min.y, min.z, max.x, max.y, max.z);
   }
 
-  static fromBlock(min: Vec3) {
+  static fromBlock(min: FakeVec3) {
     return new AABB(min.x, min.y, min.z, min.x + 1.0, min.y + 1.0, min.z + 1.0);
   }
 
-
   static fromShape(pts: AABBPoints, offset = emptyVec) {
-    return new AABB(pts[0], pts[1], pts[2], pts[3], pts[4], pts[5]).offsetVec(offset)
+    return new AABB(pts[0], pts[1], pts[2], pts[3], pts[4], pts[5]).translateVec(offset);
   }
 
   set(x0: number, y0: number, z0: number, x1: number, y1: number, z1: number) {
@@ -62,7 +62,7 @@ export class AABB {
   }
 
   bottomMiddlePoint(): Vec3 {
-    return new Vec3(lerp(0.5, this.minX, this.maxX), this.minY, lerp(0.5, this.minZ, this.maxZ));
+    return new Vec3((this.maxX - this.minX) / 2, this.minY, (this.maxZ - this.minZ) / 2);
   }
 
   heightAndWidths(): Vec3 {
@@ -99,8 +99,8 @@ export class AABB {
    * @returns {number[][]} single element long array of shapes.
    */
   toShapeFromBottomMiddle(): AABBPoints[] {
-    const wx = lerp(0.5, this.minX, this.maxX);
-    const wz = lerp(0.5, this.minX, this.maxX);
+    const wx = (this.maxX - this.minX) / 2;
+    const wz = (this.maxZ - this.minZ) / 2;
     return [[-wx, 0, -wz, wx, this.maxY - this.minY, wz]];
   }
 
@@ -160,7 +160,7 @@ export class AABB {
     return this;
   }
 
-  offset(x: number, y: number, z: number) {
+  translate(x: number, y: number, z: number) {
     this.minX += x;
     this.minY += y;
     this.minZ += z;
@@ -169,7 +169,7 @@ export class AABB {
     this.maxZ += z;
     return this;
   }
-  offsetVec(vec: Vec3) {
+  translateVec(vec: FakeVec3) {
     this.minX += vec.x;
     this.minY += vec.y;
     this.minZ += vec.z;
@@ -298,20 +298,20 @@ export class AABB {
     );
   }
 
-  xzDistanceToVec(pos: Vec3): number {
+  xzDistanceToVec(pos: FakeVec3): number {
     let dx = Math.max(this.minX - pos.x, 0, pos.x - this.maxX);
     let dz = Math.max(this.minZ - pos.z, 0, pos.z - this.maxZ);
     return Math.sqrt(dx * dx + dz * dz);
   }
 
-  distanceToVec(pos: Vec3): number {
+  distanceToVec(pos: FakeVec3): number {
     let dx = Math.max(this.minX - pos.x, 0, pos.x - this.maxX);
     let dy = Math.max(this.minY - pos.y, 0, pos.y - this.maxY);
     let dz = Math.max(this.minZ - pos.z, 0, pos.z - this.maxZ);
     return Math.sqrt(dx * dx + dy * dy + dz * dz);
   }
 
-  public expandTowards(vec3: Vec3): AABB {
+  public expandTowards(vec3: FakeVec3): AABB {
     return this.expandTowardsCoords(vec3.x, vec3.y, vec3.z);
   }
 
@@ -344,7 +344,7 @@ export class AABB {
     return new AABB(this.minX + d, this.minY + d2, this.minZ + d3, this.maxX + d, this.maxY + d2, this.maxZ + d3);
   }
 
-  public move(vec3: Vec3): AABB {
+  public move(vec3: FakeVec3): AABB {
     return new AABB(
       this.minX + vec3.x,
       this.minY + vec3.y,
@@ -359,7 +359,7 @@ export class AABB {
     return this.minX < d4 && this.maxX > d && this.minY < d5 && this.maxY > d2 && this.minZ < d6 && this.maxZ > d3;
   }
 
-  public collidesAABB(aABB: AABB): boolean {
+  public collides(aABB: AABB): boolean {
     return this.collidesCoords(aABB.minX, aABB.minY, aABB.minZ, aABB.maxX, aABB.maxY, aABB.maxZ);
   }
 
@@ -367,6 +367,21 @@ export class AABB {
     return (
       this.minX <= d4 && this.maxX >= d && this.minY <= d5 && this.maxY >= d2 && this.minZ <= d6 && this.maxZ >= d3
     );
+  }
+
+  public containsVec(vec: FakeVec3) {
+    return (
+      this.minX <= vec.x &&
+      this.maxX >= vec.x &&
+      this.minY <= vec.y &&
+      this.maxY >= vec.y &&
+      this.minZ <= vec.z &&
+      this.maxZ >= vec.z
+    );
+  }
+
+  public contains(x: number, y: number, z: number) {
+    return this.minX <= x && this.maxX >= x && this.minY <= y && this.maxY >= y && this.minZ <= z && this.maxZ >= z;
   }
 
   public getCenter(): Vec3 {

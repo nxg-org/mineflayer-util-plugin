@@ -1,20 +1,15 @@
 import type { Bot } from "mineflayer";
+import { Vec3 } from "vec3";
 import { EntityFunctions } from "./entityFunctions";
 import { FilterFunctions } from "./filterFunctions";
 import { InventoryFunctions } from "./inventoryFunctions";
 import { MovementFunctions } from "./movementFunctions";
 import { PredictiveFunctions } from "./predictiveFunctions";
 import { RayTraceFunctions } from "./rayTracingFunctions";
+import { MathUtils } from "./static";
 
-/**
- * I don't believe I need any locks, as I'm only going to have one instance of this per bot.
- * This is added to bot context so multiple instances will exist in memory.
- * Therefore, I don't need this. https://www.npmjs.com/package/async-lock
- */
 
-/**
- * I may add listeners to this class, as halting until an item is equipped may be good.
- */
+
 
 /**
  * I can't inherit from multiple classes. This language sucks.
@@ -25,18 +20,27 @@ import { RayTraceFunctions } from "./rayTracingFunctions";
  */
 
 export class UtilFunctions {
-    public inv: InventoryFunctions;
-    public move: MovementFunctions;
-    public entity: EntityFunctions;
-    public predict: PredictiveFunctions;
-    public filters: FilterFunctions;
-    public raytrace: RayTraceFunctions;
-    constructor(public bot: Bot) {
-        this.inv = new InventoryFunctions(bot);
-        this.move = new MovementFunctions(bot);
-        this.entity = new EntityFunctions(bot);
-        this.predict = new PredictiveFunctions(bot);
-        this.filters = new FilterFunctions(bot);
-        this.raytrace = new RayTraceFunctions(bot);
-    }
+  public inv: InventoryFunctions;
+  public move: MovementFunctions;
+  public entity: EntityFunctions;
+  public predict: PredictiveFunctions;
+  public filters: FilterFunctions;
+  public raytrace: RayTraceFunctions;
+  constructor(public bot: Bot) {
+    this.inv = new InventoryFunctions(bot);
+    this.move = new MovementFunctions(bot);
+    this.entity = new EntityFunctions(bot);
+    this.predict = new PredictiveFunctions(bot);
+    this.filters = new FilterFunctions(bot);
+    this.raytrace = new RayTraceFunctions(bot);
+  }
+
+  public getViewDir() {
+    return new Vec3
+    (
+      -Math.sin(this.bot.entity.yaw) * Math.cos(this.bot.entity.pitch),
+      Math.sin(this.bot.entity.pitch),
+      -Math.cos(this.bot.entity.yaw) * Math.cos(this.bot.entity.pitch)
+    );
+  }
 }

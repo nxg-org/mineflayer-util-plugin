@@ -20,6 +20,8 @@ export class MovementFunctions {
     this.bot._client.write("look", { ...notchianYawAndPitch, onGround: onGround ?? this.bot.entity.onGround });
     if (update) {
       this.bot.look(yaw, pitch, true);
+      this.bot.entity.pitch = pitch;
+      this.bot.entity.yaw = yaw;
     }
   }
 
@@ -29,13 +31,17 @@ export class MovementFunctions {
     this.bot._client.write("look", { ...nyp, onGround: onGround ?? this.bot.entity.onGround });
     if (update) {
       this.bot.look(yaw, pitch, true);
+      this.bot.entity.pitch = pitch;
+      this.bot.entity.yaw = yaw;
     }
   }
 
   lazyTeleport(endPos: Vec3, steps = 1, update = false) {
     for (const pos of interpolate(this.bot.entity.position, endPos, steps)) {
-      this.bot._client.write("position", { ...pos, onGround: this.bot.entity.onGround });
+      const block = this.bot.blockAt(pos.offset(0, -0.01, 0));
+      if (!block) break;
+      this.bot._client.write("position", { ...pos, onGround: block.transparent });
     }
-    if (update) this.bot.entity.position.set(endPos.x, endPos.y, endPos.z);
+    if (update) this.bot.entity.position.set(endPos.x, endPos.y, endPos.z); 
   }
 }

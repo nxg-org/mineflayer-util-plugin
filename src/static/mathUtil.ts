@@ -59,6 +59,10 @@ export namespace MathUtils {
     return yaw;
   }
 
+  export function getViewDir(pitch: number, yaw: number) {
+    return new Vec3(-Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), -Math.cos(yaw) * Math.cos(pitch))
+  }
+
   export function yawPitchAndSpeedToDir(yaw: number, pitch: number, speed: number) {
     return new Vec3(-Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), -Math.cos(yaw) * Math.cos(pitch)).scale(speed);
   }

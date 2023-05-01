@@ -47,9 +47,9 @@ export class RayTraceFunctions {
 
     for (const id in aabbMap) {
       const aabb = aabbMap[id];
-      const pt = aabb.bottomMiddlePoint();
+      const pt = aabb.minPoint();
       const entity = this.bot.entities[id];
-      const intersect = iterator.intersect(aabb.toShapeFromBottomMiddle(), pt);
+      const intersect = iterator.intersect(aabb.toShapeFromMin(), pt);
       if (intersect) {
         const entityDir = pt.minus(eyePos);
         const sign = Math.sign(entityDir.dot(dir));

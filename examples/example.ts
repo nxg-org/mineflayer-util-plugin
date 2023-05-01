@@ -45,7 +45,7 @@ bot.once("spawn", () => {
                     console.log(player);
                     bot.chat(`${player.username ?? player.name} at ${player.position}`);
                 } else {
-                    const block = bot.util.raytrace.blockAtEntityCursor(target, 256); //includes face and intersect. That's very nice.
+                    const block = bot.util.raytrace.entityRaytrace(target.position, 256); //includes face and intersect. That's very nice.
                     if (block) {
                         console.log(block);
                         bot.chat(`${block.name} at ${block.position}`);
