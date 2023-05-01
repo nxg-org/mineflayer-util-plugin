@@ -26,7 +26,7 @@ export class UtilFunctions {
   public predict: PredictiveFunctions;
   public filters: FilterFunctions;
   public raytrace: RayTraceFunctions;
-  constructor(public bot: Bot) {
+  constructor(private bot: Bot) {
     this.inv = new InventoryFunctions(bot);
     this.move = new MovementFunctions(bot);
     this.entity = new EntityFunctions(bot);
