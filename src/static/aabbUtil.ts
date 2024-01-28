@@ -25,16 +25,16 @@ export namespace AABBUtils {
     }
     
     export function getPlayerAABB(entity: { position: Vec3, height?: number, width?: number }): AABB {
-        const w = entity.width ? entity.width / 2 : 0.6 
-        return new AABB(-w, 0, -w, w, entity.height ? entity.height + 0.18 : 1.8, w).translateVec(entity.position);
+        const hw = entity.width ? entity.width / 2 : 0.3
+        return new AABB(-hw, 0, -hw, hw, entity.height ? entity.height + 0.18 : 1.8, hw).translateVec(entity.position);
     }
 
     export function getPlayerAABBRaw(position: Vec3, height = 1.8): AABB {
-        return new AABB(-0.6, 0, -0.6, 0.6, height, 0.6).translateVec(position);
+        return new AABB(-0.3, 0, -0.3, 0.3, height, 0.3).translateVec(position);
     }
     
     export function getEntityAABBRaw(entity: { position: Vec3; height: number; width?: number}) {
-        const w = entity.width ? entity.width / 2 : entity.height / 2
-        return new AABB(-w, 0, -w, w, entity.height, w).translateVec(entity.position);
+        const hw = entity.width ? entity.width / 2 : entity.height / 2
+        return new AABB(-hw, 0, -hw, hw, entity.height, hw).translateVec(entity.position);
     }
 }

@@ -36,6 +36,17 @@ export class AABB {
     return new AABB(min.x, min.y, min.z, min.x + 1.0, min.y + 1.0, min.z + 1.0);
   }
 
+  static fromBlockPos(min: FakeVec3) {
+    return new AABB(
+      Math.floor(min.x),
+      Math.floor(min.y),
+      Math.floor(min.z),
+      Math.floor(min.x) + 1.0,
+      Math.floor(min.y) + 1.0,
+      Math.floor(min.z) + 1.0
+    );
+  }
+
   static fromShape(pts: AABBPoints, offset = emptyVec) {
     return new AABB(pts[0], pts[1], pts[2], pts[3], pts[4], pts[5]).translateVec(offset);
   }
@@ -345,14 +356,7 @@ export class AABB {
   }
 
   public move(vec3: FakeVec3): AABB {
-    return new AABB(
-      this.minX + vec3.x,
-      this.minY + vec3.y,
-      this.minZ + vec3.z,
-      this.maxX + vec3.x,
-      this.maxY + vec3.y,
-      this.maxZ + vec3.z
-    );
+    return new AABB(this.minX + vec3.x, this.minY + vec3.y, this.minZ + vec3.z, this.maxX + vec3.x, this.maxY + vec3.y, this.maxZ + vec3.z);
   }
 
   public intersectsCoords(d: number, d2: number, d3: number, d4: number, d5: number, d6: number): boolean {
@@ -364,23 +368,18 @@ export class AABB {
   }
 
   public collidesCoords(d: number, d2: number, d3: number, d4: number, d5: number, d6: number): boolean {
-    return (
-      this.minX <= d4 && this.maxX >= d && this.minY <= d5 && this.maxY >= d2 && this.minZ <= d6 && this.maxZ >= d3
-    );
+    return this.minX <= d4 && this.maxX >= d && this.minY <= d5 && this.maxY >= d2 && this.minZ <= d6 && this.maxZ >= d3;
+  }
+
+  public contains(aABB: AABB) {
+    return this.containsCoords(aABB.minX, aABB.minY, aABB.minZ) && this.containsCoords(aABB.maxX, aABB.maxY, aABB.maxZ);
   }
 
   public containsVec(vec: FakeVec3) {
-    return (
-      this.minX <= vec.x &&
-      this.maxX >= vec.x &&
-      this.minY <= vec.y &&
-      this.maxY >= vec.y &&
-      this.minZ <= vec.z &&
-      this.maxZ >= vec.z
-    );
+    return this.minX <= vec.x && this.maxX >= vec.x && this.minY <= vec.y && this.maxY >= vec.y && this.minZ <= vec.z && this.maxZ >= vec.z;
   }
 
-  public contains(x: number, y: number, z: number) {
+  public containsCoords(x: number, y: number, z: number) {
     return this.minX <= x && this.maxX >= x && this.minY <= y && this.maxY >= y && this.minZ <= z && this.maxZ >= z;
   }
 
