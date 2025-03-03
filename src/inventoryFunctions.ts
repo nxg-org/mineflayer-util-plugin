@@ -56,10 +56,18 @@ export class InventoryFunctions {
         return this._equippingOffHand;
     }
 
+    public get equipmentSlots(): EquipmentDestination[] {
+        const ret = ["hand", "head", "torso", "legs", "feet"] as EquipmentDestination[]
+        if (!this.bot.supportFeature('doesntHaveOffHandSlot')) {
+            ret.push("off-hand");
+        }
+        return ret;
+    }
+
     getAllItems(): Item[] {
         return [
             ...this.bot.inventory.items(),
-            ...["hand", "head", "torso", "legs", "feet", "off-hand"].map(
+            ...this.equipmentSlots.map(
                 (name) => this.bot.inventory.slots[this.bot.getEquipmentDestSlot(name)]
             ),
         ].filter((e) => !!e);
@@ -68,7 +76,7 @@ export class InventoryFunctions {
     getAllItemsExceptCurrent(current: EquipmentDestination): Item[] {
         return [
             ...this.bot.inventory.items(),
-            ...(["hand", "head", "torso", "legs", "feet", "off-hand"]
+            ...(this.equipmentSlots
                 .filter((name) => name !== current))
                 .map((name) => this.bot.inventory.slots[this.bot.getEquipmentDestSlot(name)]),
         ].filter((e) => !!e);
