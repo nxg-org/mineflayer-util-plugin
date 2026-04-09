@@ -70,7 +70,7 @@ export class InventoryFunctions {
             ...this.equipmentSlots.map(
                 (name) => this.bot.inventory.slots[this.bot.getEquipmentDestSlot(name)]
             ),
-        ].filter((e) => !!e);
+        ].filter((e) => !!e) as Item[];
     }
 
     getAllItemsExceptCurrent(current: EquipmentDestination): Item[] {
@@ -79,7 +79,7 @@ export class InventoryFunctions {
             ...(this.equipmentSlots
                 .filter((name) => name !== current))
                 .map((name) => this.bot.inventory.slots[this.bot.getEquipmentDestSlot(name)]),
-        ].filter((e) => !!e);
+        ].filter((e) => !!e) as Item[]; 
     }
 
     getHandWithItem(offhand?: boolean): Item | null {

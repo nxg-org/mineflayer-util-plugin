@@ -1,8 +1,6 @@
-import type { Effects } from "minecraft-data";
 import type { Bot } from "mineflayer";
 import type { Entity } from "prismarine-entity";
-import type { Item, NormalizedEnchant } from "prismarine-item";
-import md from "minecraft-data";
+import type { Item } from "prismarine-item";
 import { Vec3 } from "vec3";
 import { Overwrites, PredictiveWorld } from "./worldRelated/predictiveWorld";
 import type { Block } from "prismarine-block";
