@@ -6,5 +6,6 @@ examples/
 lib/example.*
 tsconfig.json
 
+pnpm-lock.yaml
 
 src/calcs/minecraftCalcs.jav
