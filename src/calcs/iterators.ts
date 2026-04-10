@@ -11,6 +11,8 @@ export enum BlockFace {
     EAST = 5,
 }
 
+export type Intersection = { pos: Vec3; face: BlockFace };
+
 export class RaycastIterator {
     block: { x: number; y: number; z: number; face: number };
     blockVec: Vec3;
@@ -64,7 +66,7 @@ export class RaycastIterator {
     // Returns null if none of the shapes is intersected, otherwise returns intersect pos and face
     // shapes are translated by offset
     //[x0: number,y0: number,z0: number,x1:number,y1:number,z1:number][]
-    intersect(shapes: [x0: number,y0: number,z0: number,x1:number,y1:number,z1:number][], offset: Vec3) {
+    intersect(shapes: [x0: number,y0: number,z0: number,x1:number,y1:number,z1:number][], offset: Vec3): Intersection | null {
         // Shapes is an array of shapes, each in the form of: [x0, y0, z0, x1, y1, z1]
         let t = Number.MAX_VALUE;
         let f = BlockFace.UNKNOWN;

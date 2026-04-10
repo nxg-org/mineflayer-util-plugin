@@ -1,10 +1,10 @@
 import { Bot } from "mineflayer";
 import { Block } from "prismarine-block";
 import { Vec3 } from "vec3";
-import { RaycastIterator } from "./iterators";
+import { Intersection, RaycastIterator } from "./iterators";
 
 type Iteration = { x: number; y: number; z: number; face: number };
-type BlockAndIterations = { block: Block | null; iterations: Iteration[] };
+type BlockAndIterations = { block: Block | null; iterations: Iteration[], intersect?: Intersection };
 
 
 export class InterceptFunctions {
@@ -34,6 +34,7 @@ export class InterceptFunctions {
                     return {
                         block,
                         iterations,
+                        intersect: intersect,
                     };
                 }
             }
