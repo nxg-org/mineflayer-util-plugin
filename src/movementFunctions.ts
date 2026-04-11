@@ -39,7 +39,7 @@ export class MovementFunctions {
 
   constructor(private bot: Bot) {
     this.trackSentRotation = this.captureSentRotation.bind(this);
-    this.captureSentRotation();
+    this.bot.on("spawn", this.trackSentRotation); // should clear the sent rotation when the bot respawns, 
     this.bot.on("move", this.trackSentRotation);
   }
 
