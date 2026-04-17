@@ -26,7 +26,8 @@
 
 <h2>Quick Start</h2>
 
-<pre><code class="language-ts">import mineflayer from "mineflayer";
+```ts
+import mineflayer from "mineflayer";
 import inject from "@nxg-org/mineflayer-util-plugin";
 
 const bot = mineflayer.createBot({
@@ -39,7 +40,7 @@ inject(bot);
 // Helpers are now available under bot.util
 const dir = bot.util.getViewDir();
 const nearest = bot.util.filters.nearestCrystalFilter();
-</code></pre>
+```
 
 <h2>What Is Included</h2>
 
