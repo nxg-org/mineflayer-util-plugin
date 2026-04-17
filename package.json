@@ -21,7 +21,7 @@
     },
     "devDependencies": {
         "@types/node": "^17.0.4",
-        "mineflayer": "^4.17.0",
+        "mineflayer": "link:C:\\Users\\owner\\Documents\\github\\mineflayer",
         "prismarine-block": "^1.23.0",
         "prismarine-entity": "^2.6.0",
         "prismarine-item": "^1.18.0",

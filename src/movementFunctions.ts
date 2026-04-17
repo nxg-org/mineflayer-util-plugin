@@ -23,6 +23,10 @@ function deltaRad(a: number, b: number) {
   return delta;
 }
 
+function getHorizontalCollision (bot: Bot) {
+    return !!((bot.entity as any).horizontalCollision ?? (bot.entity as any).isCollidedHorizontally)
+}
+
 type PendingLookSync = {
   yaw: number;
   pitch: number;
@@ -89,8 +93,10 @@ export class MovementFunctions {
     const sync = this.waitForLookSync(yaw, pitch, epsilon);
 
     try {
+      console.time("lookSync");
       await this.bot.look(yaw, pitch, force);
       await sync;
+      console.timeEnd("lookSync");
     } catch (error) {
       if (
         this.pendingLookSync?.yaw === activeRequest.yaw &&
@@ -109,8 +115,14 @@ export class MovementFunctions {
   }
 
   forceLook(yaw: number, pitch: number, update: boolean = false, onGround?: boolean) {
-    const notchianYawAndPitch = { yaw: MathUtils.toNotchianYaw(yaw), pitch: MathUtils.toNotchianPitch(pitch) };
-    this.bot._client.write("look", { ...notchianYawAndPitch, onGround: onGround ?? this.bot.entity.onGround });
+    const packet: Record<string, unknown> = { yaw: MathUtils.toNotchianYaw(yaw), pitch: MathUtils.toNotchianPitch(pitch) };
+    packet.onGround = onGround ?? this.bot.entity.onGround;
+    packet.flags = {
+      onGround: packet.onGround,
+      hasHorizontalCollision: getHorizontalCollision(this.bot),
+    };
+
+    this.bot._client.write("look", packet);
     if (update) {
       this.bot.look(yaw, pitch, true);
       this.bot.entity.pitch = pitch;
@@ -120,13 +132,7 @@ export class MovementFunctions {
 
   forceLookAt(pos: Vec3, update: boolean = false, onGround?: boolean) {
     const { yaw, pitch } = MathUtils.pointToYawAndPitch(this.bot, pos);
-    const nyp = { yaw: MathUtils.toNotchianYaw(yaw), pitch: MathUtils.toNotchianPitch(pitch) };
-    this.bot._client.write("look", { ...nyp, onGround: onGround ?? this.bot.entity.onGround });
-    if (update) {
-      this.bot.look(yaw, pitch, true);
-      this.bot.entity.pitch = pitch;
-      this.bot.entity.yaw = yaw;
-    }
+    return this.forceLook(yaw, pitch, update, onGround);
   }
 
   lazyTeleport(endPos: Vec3, steps = 1, update = false) {
