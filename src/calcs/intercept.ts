@@ -39,7 +39,7 @@ export class InterceptFunctions {
                 }
             }
             pos = iter.next();
-            if (range > 20 || (iterations.length >= 1000 && iterations.length % 1000 === 0)) {
+            if ((iterations.length >= 1000 && iterations.length % 1000 === 0)) {
                 // console.trace("too much");
                 console.log(from, direction, range, iterations, block, position, pos);
             }
