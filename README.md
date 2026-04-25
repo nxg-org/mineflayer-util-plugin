@@ -5,6 +5,9 @@
     A focused collection of bot helpers for movement, ray tracing, entity math, inventory handling,
     prediction, and reusable geometry utilities.
   </p>
+  <p>
+    Notably, this has fixes for looking not being synced, better raytracing handling for entities, a predictive world state for simulating client sided blocks, axis-aligned bounding box implementations, and better inventory management to prevent desyncs and more reliably find items in the inventory.
+  </p>
 </div>
 
 <p align="center">
