@@ -1,0 +1,2 @@
+minimumReleaseAgeExclude:
+  - node-aabb@0.1.0

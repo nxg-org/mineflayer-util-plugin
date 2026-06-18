@@ -23,7 +23,7 @@ export class FilterFunctions {
     }
 
     allButOtherBotsFilter(): Entity | null {
-        return this.getNearestEntity((e: Entity) => e.type === "player" && (!this.botNames?.includes(e.username ?? "") ?? true));
+        return this.getNearestEntity((e: Entity) => e.type === "player" && !this.botNames?.includes(e.username ?? ""));
     }
 
     static allButOtherBotsFilter(bot: Bot, ...names: string[]): Entity | null {
