@@ -1,6 +1,6 @@
 <div align="center">
   <h1>AABB</h1>
-  <p><code>aabb</code> package, re-exported from <code>src/calcs/aabb.ts</code></p>
+  <p><code>node-aabb</code> package, re-exported from <code>src/calcs/aabb.ts</code></p>
 </div>
 
 <p>

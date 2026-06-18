@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      aabb:
-        specifier: npm:node-aabb@^0.1.0
-        version: node-aabb@0.1.0(vec3@0.1.10)
+      node-aabb:
+        specifier: ^0.1.0
+        version: 0.1.0(vec3@0.1.10)
     devDependencies:
       '@types/node':
         specifier: ^17.0.4

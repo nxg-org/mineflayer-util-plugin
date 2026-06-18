@@ -20,11 +20,11 @@
         "test": "ts-node examples/example.ts"
     },
     "dependencies": {
-        "aabb": "npm:node-aabb@^0.1.0"
+        "node-aabb": "^0.1.0"
     },
     "devDependencies": {
         "@types/node": "^17.0.4",
-        "mineflayer": "link:C:\\Users\\owner\\Documents\\github\\mineflayer",
+        "mineflayer": "git+https://github.com/GenerelSchwerz/mineflayer.git",
         "prismarine-block": "^1.23.0",
         "prismarine-entity": "^2.6.0",
         "prismarine-item": "^1.18.0",
