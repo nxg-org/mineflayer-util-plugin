@@ -19,6 +19,9 @@
         "prepublish": "npm run build",
         "test": "ts-node examples/example.ts"
     },
+    "dependencies": {
+        "aabb": "github:nxg-org/node-aabb"
+    },
     "devDependencies": {
         "@types/node": "^17.0.4",
         "mineflayer": "link:C:\\Users\\owner\\Documents\\github\\mineflayer",

@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      aabb:
+        specifier: github:nxg-org/node-aabb
+        version: https://codeload.github.com/nxg-org/node-aabb/tar.gz/6024915ebb76a1a80dd38ff09c40c7e0991f7f58(vec3@0.1.10)
     devDependencies:
       '@types/node':
         specifier: ^17.0.4
@@ -34,6 +38,12 @@ packages:
 
   '@types/node@17.0.45':
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
+
+  aabb@https://codeload.github.com/nxg-org/node-aabb/tar.gz/6024915ebb76a1a80dd38ff09c40c7e0991f7f58:
+    resolution: {gitHosted: true, integrity: sha512-XkZWl94sGVJaub9YEGTB1sJv8TULxTJv9bLrHe7elL1/XORfx64yu1p+pTDEgo8nPLP3NxBdJsLjw+e8YMCW6Q==, tarball: https://codeload.github.com/nxg-org/node-aabb/tar.gz/6024915ebb76a1a80dd38ff09c40c7e0991f7f58}
+    version: 0.1.0
+    peerDependencies:
+      vec3: '>=0.1.7 <0.3.0'
 
   abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -176,6 +186,10 @@ packages:
 snapshots:
 
   '@types/node@17.0.45': {}
+
+  aabb@https://codeload.github.com/nxg-org/node-aabb/tar.gz/6024915ebb76a1a80dd38ff09c40c7e0991f7f58(vec3@0.1.10):
+    dependencies:
+      vec3: 0.1.10
 
   abort-controller@3.0.0:
     dependencies:

@@ -1,11 +1,12 @@
 <div align="center">
   <h1>AABB</h1>
-  <p><code>src/calcs/aabb.ts</code></p>
+  <p><code>aabb</code> package, re-exported from <code>src/calcs/aabb.ts</code></p>
 </div>
 
 <p>
   Public axis-aligned bounding box class used throughout the library for collision checks, ray intersection,
-  and entity hitbox math.
+  and entity hitbox math. The implementation lives in
+  <a href="https://github.com/nxg-org/node-aabb">nxg-org/node-aabb</a>.
 </p>
 
 <h2>Constructor</h2>
@@ -59,4 +60,3 @@
   <li>Most methods mutate the current instance when they are geometry transforms.</li>
   <li>Ray helpers normalize the direction vector internally.</li>
 </ul>
-
