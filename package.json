@@ -20,7 +20,7 @@
         "test": "ts-node examples/example.ts"
     },
     "dependencies": {
-        "aabb": "github:nxg-org/node-aabb"
+        "aabb": "npm:node-aabb@^0.1.0"
     },
     "devDependencies": {
         "@types/node": "^17.0.4",

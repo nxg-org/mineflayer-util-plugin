@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       aabb:
-        specifier: github:nxg-org/node-aabb
-        version: https://codeload.github.com/nxg-org/node-aabb/tar.gz/6024915ebb76a1a80dd38ff09c40c7e0991f7f58(vec3@0.1.10)
+        specifier: npm:node-aabb@^0.1.0
+        version: node-aabb@0.1.0(vec3@0.1.10)
     devDependencies:
       '@types/node':
         specifier: ^17.0.4
@@ -38,12 +38,6 @@ packages:
 
   '@types/node@17.0.45':
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
-
-  aabb@https://codeload.github.com/nxg-org/node-aabb/tar.gz/6024915ebb76a1a80dd38ff09c40c7e0991f7f58:
-    resolution: {gitHosted: true, integrity: sha512-XkZWl94sGVJaub9YEGTB1sJv8TULxTJv9bLrHe7elL1/XORfx64yu1p+pTDEgo8nPLP3NxBdJsLjw+e8YMCW6Q==, tarball: https://codeload.github.com/nxg-org/node-aabb/tar.gz/6024915ebb76a1a80dd38ff09c40c7e0991f7f58}
-    version: 0.1.0
-    peerDependencies:
-      vec3: '>=0.1.7 <0.3.0'
 
   abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -111,6 +105,11 @@ packages:
   nearley@2.20.1:
     resolution: {integrity: sha512-+Mc8UaAebFzgV+KpI5n7DasuuQCHA89dmwm7JXw3TV43ukfNQ9DnBH3Mdb2g/I4Fdxc26pwimBWvjIw0UAILSQ==}
     hasBin: true
+
+  node-aabb@0.1.0:
+    resolution: {integrity: sha512-B3UkxOWfLTxOcn+b98kPI/Qy7mYT9bYLydbrFN7kX1K1o9N0f2dBwWE1B1P0r2DIR2TrbYEuL7DN4SOjc36/ag==}
+    peerDependencies:
+      vec3: '>=0.1.7 <0.3.0'
 
   prismarine-biome@1.4.0:
     resolution: {integrity: sha512-fD2WmjN8Zr/xA/jeMInReLgaDlznwA5xlaK529PzWuGzgjpc5ijVu1Lp1oqHyZn3WxOG/bRVtW1bU+tmgCurWA==}
@@ -187,10 +186,6 @@ snapshots:
 
   '@types/node@17.0.45': {}
 
-  aabb@https://codeload.github.com/nxg-org/node-aabb/tar.gz/6024915ebb76a1a80dd38ff09c40c7e0991f7f58(vec3@0.1.10):
-    dependencies:
-      vec3: 0.1.10
-
   abort-controller@3.0.0:
     dependencies:
       event-target-shim: 5.0.1
@@ -247,6 +242,10 @@ snapshots:
       moo: 0.5.3
       railroad-diagrams: 1.0.0
       randexp: 0.4.6
+
+  node-aabb@0.1.0(vec3@0.1.10):
+    dependencies:
+      vec3: 0.1.10
 
   prismarine-biome@1.4.0(prismarine-registry@1.12.0):
     dependencies:
