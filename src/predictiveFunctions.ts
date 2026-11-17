@@ -141,11 +141,15 @@ export class PredictiveFunctions {
         break;
       }
     }
-    this.damageMultiplier = bot.registry.version[">="]("1.9") ? 8 : 7; // for 1.12+ 8 for 1.8 TODO check when the change occur (likely 1.9)
-    this.armorToughnessKey = bot.registry.version[">="]("1.16")
+    // These versions are Java's. A Bedrock registry can't compare against them (version[">="] throws
+    // on a number it doesn't know), and every Bedrock version it supports is newer, so Bedrock takes the
+    // current values.
+    const atLeast = (version: string) => bot.registry.type === "bedrock" || bot.registry.version[">="](version);
+    this.damageMultiplier = atLeast("1.9") ? 8 : 7; // for 1.12+ 8 for 1.8 TODO check when the change occur (likely 1.9)
+    this.armorToughnessKey = atLeast("1.16")
       ? "minecraft:generic.armor_toughness"
       : "generic.armorToughness"; // was renamed in 1.16
-    this.armorProtectionKey = bot.registry.version[">="]("1.16") ? "minecraft:generic.armor" : "generic.armor"; // was renamed in 1.16
+    this.armorProtectionKey = atLeast("1.16") ? "minecraft:generic.armor" : "generic.armor"; // was renamed in 1.16
 
     this.world = new PredictiveWorld(bot);
   }
